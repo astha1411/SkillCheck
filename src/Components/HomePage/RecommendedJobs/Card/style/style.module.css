@@ -1,0 +1,33 @@
+.img {
+  height: 100px;
+  width: 100px;
+  margin-left: 15px !important;
+}
+.rw {
+  height: 270px !important;
+  width: 300px !important;
+  margin-left: 100px !important;
+  /* background-color: lightcyan !important; */
+}
+.company {
+  padding-top: 25px !important;
+}
+.name {
+  margin-right: 10px !important;
+  padding-top: 25px !important;
+  font-size: 25px !important;
+  font-weight: 100px !important;
+}
+.role {
+  font-size: 29px !important;
+  padding-top: 15px !important;
+  padding-left: 25px !important;
+}
+.col {
+  margin-left: 35px !important;
+}
+.apply {
+  padding: 5px !important;
+
+  font-size: 10px !important;
+}

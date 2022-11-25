@@ -1,0 +1,22 @@
+.img {
+  height: 70px !important;
+  width: 100px !important;
+}
+.head {
+  margin-right: 200px !important;
+  width: 600px !important;
+}
+
+.rw {
+  color: #808080;
+  background-color: pink;
+  font-weight: 500px;
+  font-size: 17px !important;
+}
+.card {
+  width: 1000px !important;
+  margin-left: 100px !important;
+}
+.logo {
+  margin-left: 100px !important;
+}
