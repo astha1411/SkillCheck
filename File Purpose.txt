@@ -1,0 +1,2 @@
+_app.js -> 
+Components/index.js -> exporting all files in components from a single source
