@@ -8,6 +8,7 @@ contract ChatApp{
     //USER STRUCTSD
     struct user{
         string name;
+        bool role;
         friend[] friendList;
     }
 
@@ -38,11 +39,12 @@ contract ChatApp{
     }
 
     //CREATE ACCOUNT
-    function createAccount(string calldata name) external {
+    function createAccount(string calldata name, bool role) external {
         require(checkUserExists(msg.sender) == false, "User already exists");
         require(bytes(name).length>0, "Username cannot be empty");
 
         userList[msg.sender].name = name;
+        userList[msg.sender].role = role;
 
         getAllUsers.push(AllUserStruck(name, msg.sender));
     }

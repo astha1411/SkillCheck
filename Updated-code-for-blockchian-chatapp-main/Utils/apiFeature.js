@@ -8,7 +8,7 @@ export const ChechIfWalletConnected = async () => {
     if (!window.ethereum) return console.log("Install MateMask");
 
     const accounts = await window.ethereum.request({
-      method: "eth_accounts",
+      method: "eth_accounts", //checks if wallet is connected. requires metamask to be connected to dapp to get list of accounts
     });
 
     const firstAccount = accounts[0];
@@ -20,16 +20,12 @@ export const ChechIfWalletConnected = async () => {
 
 export const connectWallet = async () => {
   try {
-    // if (!window.ethereum) return console.log("Install MateMask");
-
-    // const accounts = await window.ethereum.request({
-    //   method: "eth_requestAccounts",
-    // });
+    
 
     if (!window.ethereum) return console.log("Install MetaMask");
 
     const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
+      method: "eth_requestAccounts", //requests user to connect to metamask
     });
     const firstAccount = accounts[0];
     return firstAccount;
@@ -39,14 +35,15 @@ export const connectWallet = async () => {
 };
 
 const fetchContract = (signerOrProvider) =>
-  new ethers.Contract(ChatAppAddress, ChatAppABI, signerOrProvider);
+  new ethers.Contract(ChatAppAddress, ChatAppABI, signerOrProvider);//creates an instance of a contract. signer represents an account that
+  //can sign transactions and send them to the network. provider object can only read data from blockchain but cant send transactions
 
 export const connectingWithContract = async () => {
   try {
     const web3modal = new Web3Modal();
     const connection = await web3modal.connect();
-    const provider = new ethers.providers.Web3Provider(connection);
-    const signer = provider.getSigner();
+    const provider = new ethers.providers.Web3Provider(connection);//represents the connection to the network
+    const signer = provider.getSigner();//represents the user's wallet
     const contract = fetchContract(signer);
     return contract;
   } catch (error) {

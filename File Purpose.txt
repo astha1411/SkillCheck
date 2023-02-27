@@ -1,2 +1,5 @@
 _app.js -> 
 Components/index.js -> exporting all files in components from a single source
+apiFeature -> general utilities required by the smart contract
+ChatAppContext ->exports context for initialising contract, connecting account and fetching data on page load, functions that are 
+the interface between web page and smart contract. 

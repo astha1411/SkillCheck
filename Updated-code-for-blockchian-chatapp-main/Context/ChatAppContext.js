@@ -11,6 +11,8 @@ import {
 export const ChatAppContect = React.createContext();
 
 export const ChatAppProvider = ({ children }) => {
+
+  //STATE VARIABLES. EITHER STRUCTS, DATA TYPES OR ARRAYS FROM CHATAPP.SOL
   //USESTATE
   const [account, setAccount] = useState("");
   const [userName, setUserName] = useState("");
@@ -32,7 +34,7 @@ export const ChatAppProvider = ({ children }) => {
       //GET CONTRACT
       const contract = await connectingWithContract();
       //GET ACCOUNT
-      const connectAccount = await connectWallet();
+      const connectAccount = await connectWallet();//connect wallet returns an account type
       setAccount(connectAccount);
       //GET USER NAME
       const userName = await contract.getUsername(connectAccount);
