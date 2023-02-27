@@ -21,6 +21,7 @@ export const ChatAppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [userLists, setUserLists] = useState([]);
   const [error, setError] = useState("");
+  const [role, setRole] = useState("");
 
   //CHAT USER DATA
   const [currentUserName, setCurrentUserName] = useState("");
@@ -39,6 +40,9 @@ export const ChatAppProvider = ({ children }) => {
       //GET USER NAME
       const userName = await contract.getUsername(connectAccount);
       setUserName(userName);
+      //GET ROLE
+      const role = await contract.getRole(connectAccount);
+      setRole(role);
       //GET MY FRIEND LIST
       const friendLists = await contract.getMyFriendList();
       setFriendLists(friendLists);
@@ -46,7 +50,8 @@ export const ChatAppProvider = ({ children }) => {
       const userList = await contract.getAllAppUser();
       setUserLists(userList);
       console.log('asdf');
-      console.log(currentUserAddress);
+      console.log(role);
+      // console.log(currentUserAddress);
     } catch (error) {
       // setError("Please Install And Connect Your Wallet");
       console.log(error);
@@ -68,7 +73,7 @@ export const ChatAppProvider = ({ children }) => {
   };
 
   //CREATE ACCOUNT
-  const createAccount = async ({ name }) => {
+  const createAccount = async ({ name, role }) => {
     console.log(name, account);
     try {
       if (!name || !account)
@@ -76,11 +81,12 @@ export const ChatAppProvider = ({ children }) => {
 
       const contract = await connectingWithContract();
       console.log(contract);
-      const getCreatedUser = await contract.createAccount(name);
+      const getCreatedUser = await contract.createAccount(name, role);
 
       setLoading(true);
       await getCreatedUser.wait();
       setLoading(false);
+      console.log(name);
       window.location.reload();
     } catch (error) {
       setError("Error while creating your account Pleas reload browser");

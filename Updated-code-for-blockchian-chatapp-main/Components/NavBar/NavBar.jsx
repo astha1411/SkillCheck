@@ -29,7 +29,7 @@ const NavBar = () => {
   ];
 
   //USESTATE
-  const [active, setActive] = useState(2);
+  const [active, setActive] = useState(2);//which menu is open. by default, it is 2, i.e. CHAT
   const [open, setOpen] = useState(false);
   const [openModel, setOpenModel] = useState(false);
 

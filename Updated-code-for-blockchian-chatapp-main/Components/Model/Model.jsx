@@ -19,6 +19,7 @@ const Model = ({
 }) => {
   //USESTATE
   const [name, setName] = useState("");
+  const [role, setRole] = useState("");
   const [userAddress, setUserAddress] = useState(address);
 
   const { loading } = useContext(ChatAppContect);
@@ -51,6 +52,21 @@ const Model = ({
                   placeholder="your name"
                   onChange={(e) => setName(e.target.value)}
                 />
+                
+              </div>
+              <div className={Style.Model_box_right_name_info}>
+                <Image
+                  src={images.username}
+                  alt="user"
+                  width={30}
+                  height={30}
+                />
+                
+                <input
+                  type="text"
+                  placeholder="your role"
+                  onChange={(e) => setRole(e.target.value)}
+                />
               </div>
               <div className={Style.Model_box_right_name_info}>
                 <Image src={images.account} alt="user" width={30} height={30} />
@@ -62,7 +78,7 @@ const Model = ({
               </div>
 
               <div className={Style.Model_box_right_name_btn}>
-                <button onClick={() => functionName({ name, userAddress })}>
+                <button onClick={() => functionName({ name, role, userAddress })}>
                   {""}
                   <Image src={images.send} alt="send" width={30} height={30} />
                   {""}
