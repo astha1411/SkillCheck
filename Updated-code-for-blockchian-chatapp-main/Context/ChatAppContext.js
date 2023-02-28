@@ -49,8 +49,8 @@ export const ChatAppProvider = ({ children }) => {
       //GET ALL APP USER LIST
       const userList = await contract.getAllAppUser();
       setUserLists(userList);
-      console.log('asdf');
-      console.log(role);
+      console.log('ChatAppContext👍');
+      // console.log(role);
       // console.log(currentUserAddress);
     } catch (error) {
       // setError("Please Install And Connect Your Wallet");

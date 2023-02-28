@@ -19,8 +19,13 @@ const Model = ({
 }) => {
   //USESTATE
   const [name, setName] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState(true);
   const [userAddress, setUserAddress] = useState(address);
+
+  const onOptionChange = e => {
+    setRole(e.target.value === '0');
+    
+  }
 
   const { loading } = useContext(ChatAppContect);
   return (
@@ -52,21 +57,32 @@ const Model = ({
                   placeholder="your name"
                   onChange={(e) => setName(e.target.value)}
                 />
-                
+
               </div>
               <div className={Style.Model_box_right_name_info}>
-                <Image
-                  src={images.username}
-                  alt="user"
-                  width={30}
-                  height={30}
-                />
-                
+               
+
                 <input
-                  type="text"
-                  placeholder="your role"
-                  onChange={(e) => setRole(e.target.value)}
+                  type="radio"
+                  name="role"
+                  id="user"
+                  value="0"
+                  checked={role}
+                  onChange={onOptionChange}
                 />
+                <label htmlFor="user">User</label>
+
+                <input
+                  type="radio"
+                  name="role"
+                  id="organisation"
+                  value="1"
+                  checked={!role}
+                  onChange={onOptionChange}
+                />
+                <label htmlFor="organisation">Organisation</label>
+
+
               </div>
               <div className={Style.Model_box_right_name_info}>
                 <Image src={images.account} alt="user" width={30} height={30} />
@@ -91,6 +107,7 @@ const Model = ({
                   {""}
                   Cancle
                 </button>
+                
               </div>
             </div>
           )}
