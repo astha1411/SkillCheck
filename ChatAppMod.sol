@@ -13,7 +13,7 @@ contract ChatApp{
 
     account[] orgList;
 
-    string skillList[5] = ["Python","JS","C++","Java","Kotlin"];
+    string [5] skillList = ["Python","JS","C++","Java","Kotlin"];
     mapping(address => string[]) userSkillList;
 
     struct experience{
