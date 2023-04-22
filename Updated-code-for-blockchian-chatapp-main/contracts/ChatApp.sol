@@ -99,13 +99,8 @@ contract ChatApp{
         return userList[msg.sender].friendList;
     }
 
-    //get chat code
-    function _getChatCode(address pubkey1, address pubkey2) internal pure returns(bytes32){
-        if(pubkey1 < pubkey2){
-            return keccak256(abi.encodePacked(pubkey1, pubkey2));
-        } else 
-        return keccak256(abi.encodePacked(pubkey2, pubkey1));
-    }
+    
+    
 
     //SEND MESSAGE
     function sendMessage(address friend_key, string calldata _msg) external{
