@@ -18,7 +18,7 @@ contract ChatApp{
     mapping(address => string[]) userSkillList;
 
     struct experience{
-        //bytes32 experienceID;
+        bytes32 expID;
         address accountID;
         address orgID;
         string orgName;
@@ -33,7 +33,7 @@ contract ChatApp{
     mapping(address => bytes32[]) orgPendingList;//display in pending profile list of orgs.
 
     struct job{
-        // bytes32 jobID;
+        bytes32 jobID;
         address orgID;
         string orgName;
         string role;
@@ -147,6 +147,7 @@ contract ChatApp{
         // Add input validation in frontend, fields can't be blank etc
 
         bytes32 experienceID = _getExperienceID(msg.sender, orgID, orgName, stMonth, stYear, endMonth, endYear);
+        experienceMap[experienceID].expID = experienceID;
         experienceMap[experienceID].accountID = msg.sender;
     experienceMap[experienceID].orgID = orgID;
     experienceMap[experienceID].orgName = orgName;
@@ -170,6 +171,55 @@ function getUserExperiences(address userAddress) external view returns (experien
     return exps;//returns array of experiences 
 }
 
+    //GET PENDING EXPS (experiences that havent been verified yet)
+    function getOrgPendingExperiences() public view returns (experience[] memory) {
+    bytes32[] memory pendingJobs = orgPendingList[msg.sender];
+    experience[] memory pendingExperiences = new experience[](pendingJobs.length);
+    for (uint i = 0; i < pendingJobs.length; i++) {
+        pendingExperiences[i] = experienceMap[pendingJobs[i]];
+    }
+    return pendingExperiences;
+}
+
+    //VERIFY EXP
+    function verifyExp(bytes32 expID) public {
+    experienceMap[expID].verificationStatus = true;
+    address orgID = experienceMap[expID].orgID;
+    bytes32[] storage orgExpList = orgPendingList[orgID];
+    for (uint i = 0; i < orgExpList.length; i++) {
+        if (orgExpList[i] == expID) {
+            // remove the expID from the array
+            orgExpList[i] = orgExpList[orgExpList.length - 1];
+            orgExpList.pop();
+            break;
+        }
+    }
+}
+
+    //REJECT EXP
+    function rejectExp(bytes32 expID) public {
+    experience storage exp = experienceMap[expID];
+    require(exp.orgID == msg.sender, "Only the organization can reject the experience");
+    require(!exp.verificationStatus, "The experience is already verified");
+    bytes32[] storage orgPending = orgPendingList[msg.sender];
+    for (uint i = 0; i < orgPending.length; i++) {
+        if (orgPending[i] == expID) {
+            orgPending[i] = orgPending[orgPending.length - 1];
+            orgPending.pop();
+            break;
+        }
+    }
+
+    bytes32[] storage userExp = userExpList[exp.accountID];
+    for (uint i = 0; i < userExp.length; i++) {
+        if (userExp[i] == expID) {
+            userExp[i] = userExp[userExp.length - 1];
+            userExp.pop();
+            break;
+        }
+    }
+}
+
 
     //GET JOB ID
     function _getJobID(address orgID, string memory role, string memory location, string memory package, uint8 openingsTotal) internal pure returns (bytes32) {
@@ -181,6 +231,7 @@ function getUserExperiences(address userAddress) external view returns (experien
 function addJob(string calldata role, string calldata location, string calldata package, uint8 openingsTotal, string[] memory skillsRequired) external {
     //require that account is organisation type
     bytes32 jobID = _getJobID(msg.sender, role, location, package, openingsTotal);
+    jobMap[jobID].jobID = jobID;
     jobMap[jobID].orgID = msg.sender;
     jobMap[jobID].orgName = userList[msg.sender].name;
     jobMap[jobID].role = role;
@@ -199,12 +250,23 @@ function addJob(string calldata role, string calldata location, string calldata 
 
     //GET ALL JOBS
     function getAllJobs() public view returns (job[] memory) {
-    job[] memory allJobs = new job[](allJobIDs.length);
+    uint count = 0;
     for (uint i = 0; i < allJobIDs.length; i++) {
-        allJobs[i] = jobMap[allJobIDs[i]];
+        if (jobMap[allJobIDs[i]].openingsLeft != 0) {
+            count++;
+        }
     }
-    return allJobs;
+    job[] memory openJobs = new job[](count);
+    uint j = 0;
+    for (uint i = 0; i < allJobIDs.length; i++) {
+        if (jobMap[allJobIDs[i]].openingsLeft != 0) {
+            openJobs[j] = jobMap[allJobIDs[i]];
+            j++;
+        }
+    }
+    return openJobs;
 }
+
     //GET YOUR JOBS
     function getJobs() external view returns(job[] memory){
         uint l = orgJobPostings[msg.sender].length;
@@ -215,12 +277,48 @@ function addJob(string calldata role, string calldata location, string calldata 
         return jobs;
     }
 
+    //TODO: MODIFY JOBS TO INCLUDE JOBID, CLICK ON A JOB TO BE REDIRECTED TO JOB PAGE
+
+    //GET ORG's JOB IDS
+    function getJobIDByOrg(address _account) public view returns (bytes32[] memory) {
+    return orgJobPostings[_account];
+}
+
+    //GET ALL JOB IDS
+    function getAllJobIDs() public view returns (bytes32[] memory) {
+    uint256 numJobs = allJobIDs.length;
+    bytes32[] memory jobIDs = new bytes32[](numJobs);
+    for (uint256 i = 0; i < numJobs; i++) {
+        jobIDs[i] = allJobIDs[i];
+    }
+    return jobIDs;
+}
+
+    //GET ALL JOBS BY IDS (INPUT ARRAY OF JOBIDS, RETURN ARRAY OF JOBS)
+    function getAllJobsByIDs(bytes32[] memory jobIDs) public view returns (job[] memory) {
+    uint length = jobIDs.length;
+    job[] memory jobs = new job[](length);
+    
+    for(uint i = 0; i < length; i++){
+        jobs[i] = jobMap[jobIDs[i]];
+    }
+    
+    return jobs;
+}
+
+    //GET JOB DETAILS (GET DETAILS OF SINGLE JOB)
+    function getJobDetails(bytes32 jobID) public view returns (job memory) {
+    require(jobMap[jobID].orgID != address(0), "Job does not exist");
+    return jobMap[jobID];
+}
+
+
     //APPLY TO JOB
     //DEPENDENT ON VERIFYSKILLREQ(), CHECKALREADYAPPLIED()
 
     //VERIFY SKILL REQ OF JOB ARE MET 
    function VerifySkillReq(bytes32 jobID) public view returns(bool) {
-    require(getRole2(msg.sender), "Account is not User type");
+    require(!getRole2(msg.sender), "Account is not User type");
 
     string[] storage requiredSkills = jobMap[jobID].skillsRequired;
     string[] storage userSkills = userSkillList[msg.sender];
@@ -267,8 +365,46 @@ function addJob(string calldata role, string calldata location, string calldata 
     userApplicationList[msg.sender].push(newApplication);
 }
 
+    //GET YOU APPLICANTS (FOR ORG)
+function getApplicants(bytes32 jobID) public view returns (uint256[] memory, address[] memory, string[] memory, string[] memory) {
+    applications[] memory jobApplications = jobApplicantList[jobID];
+    uint256 numApplicants = jobApplications.length;
+    uint256[] memory numSkills = new uint256[](numApplicants);
+    address[] memory userIDs = new address[](numApplicants);
+    string[] memory names = new string[](numApplicants);
+    string[] memory statuses = new string[](numApplicants);
 
-    
+    for (uint256 i = 0; i < numApplicants; i++) {
+        address userID = jobApplications[i].userID;
+        numSkills[i] = userSkillList[userID].length;
+        userIDs[i] = userID;
+        names[i] = accountList[userID].name;
+        statuses[i] = jobApplications[i].applicationStatus;
+    }
+
+    return (numSkills, userIDs, names, statuses);
+}
+
+
+
+    //GET YOUR APPLICATIONS (FOR USER)
+   function getYourApplications() public view returns (string[] memory, string[] memory, string[] memory) {
+    applications[] memory userApplications = userApplicationList[msg.sender];
+    string[] memory orgNames = new string[](userApplications.length);
+    string[] memory roles = new string[](userApplications.length);
+    string[] memory statuses = new string[](userApplications.length);
+    for (uint i = 0; i < userApplications.length; i++) {
+        bytes32 jobID = userApplications[i].jobID;
+        job memory jobDetails = jobMap[jobID];
+        orgNames[i] = jobDetails.orgName;
+        roles[i] = jobDetails.role;
+        statuses[i] = userApplications[i].applicationStatus;
+    }
+    return (orgNames, roles, statuses);
+}
+
+
+
 
 
     //GET QUESTION ID
@@ -276,12 +412,8 @@ function addJob(string calldata role, string calldata location, string calldata 
 function _getQuestionID(string memory questionLine, string memory option1, string memory option2, string memory option3, string memory option4, uint8 answer) internal pure returns (bytes32) {
     return keccak256(abi.encodePacked(questionLine, option1, option2, option3, option4, answer));
 }
-
-
-    //ADD QUESTION
-    
-
-function addQuestion(string memory questionLine, string memory option1, string memory option2, string memory option3, string memory option4, uint8 answer) external {
+    //ADD QUESTION (BEFORE APPROVAL)
+  function addQuestion(string memory questionLine, string memory option1, string memory option2, string memory option3, string memory option4, uint8 answer, string memory skill) external {
     bytes32 questionID = _getQuestionID(questionLine, option1, option2, option3, option4, answer);
 
     questionMap[questionID] = question({
@@ -292,7 +424,78 @@ function addQuestion(string memory questionLine, string memory option1, string m
         option4: option4,
         answer: answer
     });
+    //if question is approved, only then is it pushed into quizMap
+    // quizMap[skill].push(questionID);
+
+    bytes32 proposedQuestionID = keccak256(abi.encodePacked(msg.sender, questionID));
+    proposedQuestionList.push(proposedQuestion({
+        proposedQuestionID: proposedQuestionID,
+        questionID: questionID,
+        skill: skill,
+        acceptances: 0,
+        rejections: 0
+    }));
+    proposedQuestionsByOrgList[msg.sender].push(proposedQuestionID);
 }
+
+
+    //VIEW QUIZ (BY SKILL)
+    function getQuestions(string memory skill) public view returns (question[] memory) {
+    bytes32[] storage questions = quizMap[skill];
+    uint256 numQuestions = questions.length;
+    question[] memory quizQuestions = new question[](numQuestions);
+    for (uint256 i = 0; i < numQuestions; i++) {
+        quizQuestions[i] = questionMap[questions[i]];
+    }
+    return quizQuestions;
+}
+
+    //VIEW PENDING APPROVALS
+    function getAllProposedQuestions() public view returns (proposedQuestion[] memory) {
+    return proposedQuestionList;
+}
+
+    //ACCEPT QUESTION
+    function acceptProposedQuestion(bytes32 proposedQuestionID) external {
+    // Find the proposed question in the proposedQuestionList
+    uint256 i;
+    for (i = 0; i < proposedQuestionList.length; i++) {
+        if (proposedQuestionList[i].proposedQuestionID == proposedQuestionID) {
+            break;
+        }
+    }
+
+    // Increase the acceptances count of the proposed question
+    proposedQuestionList[i].acceptances++;
+
+    // If acceptances reach 5, add question to the quizMap and remove proposed question from list
+    if (proposedQuestionList[i].acceptances == 5) {
+        bytes32 questionID = proposedQuestionList[i].questionID;
+        string memory skill = proposedQuestionList[i].skill;
+
+        // Add question ID to quizMap for the relevant skill
+        quizMap[skill].push(questionID);
+
+        // Remove proposed question from list
+        
+                proposedQuestionList[i] = proposedQuestionList[proposedQuestionList.length - 1];
+                proposedQuestionList.pop();
+        
+
+        // Remove proposed question ID from org's list
+        bytes32[] storage orgProposedQuestions = proposedQuestionsByOrgList[msg.sender];
+        for (uint256 j = 0; j < orgProposedQuestions.length; j++) {
+            if (orgProposedQuestions[j] == proposedQuestionID) {
+                orgProposedQuestions[j] = orgProposedQuestions[orgProposedQuestions.length - 1];
+                orgProposedQuestions.pop();
+                break;
+            }
+        }
+    }
+}
+
+
+    //REJECT QUESTION
 
 
     //----------------------------------------------------------------------------------------------------
