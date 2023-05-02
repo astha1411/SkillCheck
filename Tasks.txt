@@ -1,1 +1,2 @@
 1. redirect to different pages depending on role of user
+    see how to get props to this page

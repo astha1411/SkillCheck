@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 //INTERNAL IMPORT
 import Style from "./Chat.module.css";
 import images from "../../../assets";
-import { converTime } from "../../../Utils/apiFeature";
+// import { converTime } from "../../../Utils/apiFeature";
 import { Loader } from "../../index";
 
 const Chat = ({
@@ -18,27 +18,34 @@ const Chat = ({
   currentUserName,
   currentUserAddress,
   readUser,
+  yourJobs
 }) => {
   //USTE STATE
   const [message, setMessage] = useState("");
-  const [chatData, setChatData] = useState({
-    name: "",
-    address: "",
-  });
+  // const [chatData, setChatData] = useState({
+  //   name: "",
+  //   address: "",
+  // });
 
   const router = useRouter();
 
-  useEffect(() => {
-    if (!router.isReady) return;
-    setChatData(router.query);
-  }, [router.isReady]);
+  // useEffect(() => {
+  //   if (!router.isReady) return;
+  //   setChatData(router.query);
+    
+
+  // }, [router.isReady]);
 
   useEffect(() => {
-    if (chatData.address) {
-      readMessage(chatData.address);
-      readUser(chatData.address);
-    }
+    // if (chatData.address) {
+    //   readMessage(chatData.address);
+    //   readUser(chatData.address);
+    // }
   }, []);
+
+  function jobRedirect(param) {
+    // Do something when the button is clicked
+  }
 
   // console.log(chatData.address, chatData.name);
   return (
@@ -58,40 +65,50 @@ const Chat = ({
       <div className={Style.Chat_box_box}>
         <div className={Style.Chat_box}>
           <div className={Style.Chat_box_left}>
-            {friendMsg.map((el, i) => (
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+  <span>Role</span>
+  <span>Pay</span>
+  <span>Location</span>
+  <span>Openings</span>
+  <span>Vacancies</span>
+</div>
+
+            {yourJobs[0].map((el, i) => (
               <div>
-                {el.sender == chatData.address ? (
-                  <div className={Style.Chat_box_left_title}>
-                    <Image
-                      src={images.accountName}
-                      alt="image"
-                      width={50}
-                      height={50}
-                    />
-                    <span>
-                      {chatData.name} {""}
-                      <small>Time: {converTime(el.timestamp)}</small>
-                    </span>
+                {
+                // ? (
+                  <div style={{ margin: '1em 0', padding: '1em 0' }}>
+                    <div onClick={() => jobRedirect(el[0])} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}>
+                      
+                      <small>{(el[3])}</small>
+                      <small>{(el[5])}</small>
+                      <small>{(el[4])}</small>
+                      <small>{(el[6])}</small>
+                      <small>{(el[7])}</small>
+                     
+                    </div>
                   </div>
-                ) : (
-                  <div className={Style.Chat_box_left_title}>
-                    <Image
-                      src={images.accountName}
-                      alt="image"
-                      width={50}
-                      height={50}
-                    />
-                    <span>
-                      {userName} {""}
-                      <small>Time: {converTime(el.timestamp)}</small>
-                    </span>
-                  </div>
-                )}
-                <p key={i + 1}>
+                // ) : 
+                // (
+                  // <div className={Style.Chat_box_left_title}>
+                  //   <Image
+                  //     src={images.accountName}
+                  //     alt="image"
+                  //     width={50}
+                  //     height={50}
+                  //   />
+                  //   <span>
+                  //     {/* {userName} {""} */}
+                  //     {/* <small>Time: {converTime(el.timestamp)}</small> */}
+                  //   </span>
+                  // </div>
+                // )
+                }
+                {/* <p key={i + 1}>
                   {el.msg}
                   {""}
                   {""}
-                </p>
+                </p> */}
               </div>
             ))}
           </div>
@@ -116,7 +133,7 @@ const Chat = ({
                   width={50}
                   height={50}
                   onClick={() =>
-                    functionName({ msg: message, address: chatData.address })
+                    functionName({ msg: message, address: 0x0 })
                   }
                 />
               )}

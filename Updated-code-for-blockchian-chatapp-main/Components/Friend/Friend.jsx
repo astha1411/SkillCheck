@@ -22,12 +22,13 @@ const Friend = () => {
     currentUserName,
     currentUserAddress,
     readUser,
+    yourJobs
   } = useContext(ChatAppContect);
 
   return (
     <div className={Style.Friend}>
-      <div className={Style.Friend_box}>
-        <div className={Style.Friend_box_left}>
+      <div>
+        {/* <div className={Style.Friend_box_left}>
           {friendLists.map((el, i) => (
             <Card
               key={i + 1}
@@ -37,8 +38,8 @@ const Friend = () => {
               readUser={readUser}
             />
           ))}
-        </div>
-        <div className={Style.Friend_box_right}>
+        </div> */}
+        <div >
           <Chat
             functionName={sendMessage}
             readMessage={readMessage}
@@ -49,6 +50,7 @@ const Friend = () => {
             currentUserName={currentUserName}
             currentUserAddress={currentUserAddress}
             readUser={readUser}
+            yourJobs ={yourJobs}
           />
         </div>
       </div>

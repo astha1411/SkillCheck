@@ -5,30 +5,31 @@ import Image from "next/image";
 import Style from "./Filter.module.css";
 import images from "../../assets";
 import { ChatAppContect } from "../../Context/ChatAppContext";
-import { Model } from "../index";
+import { Model2 } from "../index";
 
 const Filter = () => {
-  const { account, addFriends } = useContext(ChatAppContect);
+  const { account, addFriends, yourJobs, addJob } = useContext(ChatAppContect);
 
   //USESTATE
   const [addFriend, setAddFriend] = useState(false);
+  function handleAddFriendClick() {
+    setAddFriend(true);
+  }
   return (
     <div className={Style.Filter}>
       <div className={Style.Filter_box}>
         <div className={Style.Filter_box_left}>
-          <div className={Style.Filter_box_left_search}>
-            <Image src={images.search} alt="image" width={20} height={20} />
-            <input type="text" placeholder="search.." />
+          <div className={Style.Filter}>
+            
+            YOUR JOBS
           </div>
         </div>
+        {console.log(yourJobs)}
         <div className={Style.Filter_box_right}>
-          <button>
-            <Image src={images.clear} alt="clear" width={20} height={20} />
-            CLEAR CHAT
-          </button>
-          <button >
+          
+          <button onClick={handleAddFriendClick} style={{ cursor: 'pointer' }}>
             <Image src={images.user} alt="clear" width={20} height={20} />
-            ADD FRIEND
+            ADD JOB
           </button>
         </div>
       </div>
@@ -36,14 +37,14 @@ const Filter = () => {
       {/* //MODEL COMPONENT */}
       {addFriend && (
         <div className={Style.Filter_model}>
-          <Model
+          <Model2
             openBox={setAddFriend}
-            title="WELCOME TO"
-            head="CHAT BUDDY"
-            info="Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum sit doloribus quod vel expedita, dicta voluptatibus, nemo, deserunt minima quis recusandae porro officiis modi fugiat libero tempora corporis necessitatibus itaque!"
-            smallInfo="Kindley Select Your Friend Name & Address.."
+            // title="WELCOME TO"
+            head="ADD JOB"
+            // info="Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum sit doloribus quod vel expedita, dicta voluptatibus, nemo, deserunt minima quis recusandae porro officiis modi fugiat libero tempora corporis necessitatibus itaque!"
+            smallInfo="Enter Job Details"
             image={images.hero}
-            functionName={addFriends}
+            functionName={addJob}
           />
         </div>
       )}

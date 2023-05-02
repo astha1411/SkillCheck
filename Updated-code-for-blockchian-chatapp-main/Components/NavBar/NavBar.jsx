@@ -15,12 +15,12 @@ const NavBar = () => {
       link: "alluser",
     },
     {
-      menu: "CHAT",
+      menu: "HOME",
       link: "/",
     },
     {
       menu: "CONTACT",
-      link: "/",
+      link: "basic",
     },
     {
       menu: "SETTING",

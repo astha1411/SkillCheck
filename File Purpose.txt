@@ -2,7 +2,11 @@ _app.js ->
 Components/index.js -> exporting all files in components from a single source
 apiFeature -> general utilities required by the smart contract
 ChatAppContext ->exports context for initialising contract, connecting account and fetching data on page load, functions that are 
-the interface between web page and smart contract. 
+the interface between web page and smart contract. exports the provider that wraps around _app.js 
 Model.jsx -> lays over the current page. used for taking input. can be used for add skill, add exp etc
 index.jsx -> root page. basic redirect is to here
+    it calls filter and friends models
 pages folder -> various pages are kept here
+_app.js -> source of everything. ChatAppProvider wraps around inside here. it contains props that tell which page
+is to be shown, from the pages folder
+NavBar.jsx -> for redirection. also has adequate props for redirection in general cases.

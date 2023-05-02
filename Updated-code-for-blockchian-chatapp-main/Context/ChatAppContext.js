@@ -22,6 +22,15 @@ export const ChatAppProvider = ({ children }) => {
   const [userLists, setUserLists] = useState([]);
   const [error, setError] = useState("");
   const [role, setRole] = useState("");
+  const [yourJobs, setYourJobs] = useState([[[0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde1","Bombay","12,00,000INR","1 Total","1 Left",false,"C++"],[0x8c84ea25bf347081ae18db0d8789a8f3a12fc598631e4ed824ef6a117bbb94d0,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde2","Delhi","15,00,000INR","2 Total","2 Left",false,"JS"]]]);
+  const [applicants, setApplicants] = useState({
+    jobIDs: [],
+    userIDs: [],
+    names: [],
+    statuses: [],
+    applicationIDs: [],
+  });
+  
 
   //CHAT USER DATA
   const [currentUserName, setCurrentUserName] = useState("");
@@ -133,6 +142,54 @@ export const ChatAppProvider = ({ children }) => {
     setCurrentUserName(userName);
     setCurrentUserAddress(userAddress);
   };
+
+  //GET YOUR JOBS
+  const getJobs = async () => {
+    try {
+      const contract = await connectingWithContract();
+      const _yourJobs = await contract.getJobs();
+      setYourJobs(_yourJobs);
+    } catch (error) {
+      console.log("No Jobs Posted Yet");
+    }
+  }
+
+  //ADD JOB
+  const addJob = async ({role, location, _package, openingsTotal, skillRequired}) =>{
+    console.log(role, location, _package, openingsTotal, skillRequired);
+    try {
+      if (!role || !location) return setError("Enter Details Please");
+
+      const contract = await connectingWithContract();
+      const addMessage = await contract.addJob(role, location, _package, openingsTotal, skillRequired);
+      setLoading(true);
+      await addMessage.wait();
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      setError("Please reload and try again");
+    }
+  }
+
+  //GET JOB (BY ID)
+  
+  //GET APPLICANTS
+  const getApplicants = async (jobID) => {
+    try {
+      const contract = await connectingWithContract();
+      const _applicants = await contract.getApplicants(jobID);
+      setApplicants({
+        jobIDs: _applicants[0],
+        userIDs: _applicants[1],
+        names: _applicants[2],
+        statuses: _applicants[3],
+        applicationIDs: _applicants[4],
+      });
+    } catch (error) {
+      console.log("No Applicants Applied Yet");
+    }
+  }
+
   return (
     <ChatAppContect.Provider
       value={{
@@ -143,6 +200,8 @@ export const ChatAppProvider = ({ children }) => {
         readUser,
         connectWallet,
         ChechIfWalletConnected,
+        getJobs,
+        addJob,
         account,
         userName,
         friendLists,
@@ -152,6 +211,8 @@ export const ChatAppProvider = ({ children }) => {
         error,
         currentUserName,
         currentUserAddress,
+        role,
+        yourJobs
       }}
     >
       {children}
