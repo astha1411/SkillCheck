@@ -23,9 +23,9 @@ const UserCard = ({ el, i, addFriends }) => {
           }
           <p>{el.accountAddress.slice(0, 25)}..</p>
           <button
-            onClick={() =>
-              addFriends({ name: el.name, userAddress: el.accountAddress })
-            }
+            // onClick={() =>
+            //   addFriends({ name: el.name, userAddress: el.accountAddress })
+            // }
           >
             Add Friend
           </button>

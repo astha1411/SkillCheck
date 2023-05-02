@@ -43,11 +43,11 @@ export const ChatAppProvider = ({ children }) => {
       //GET ROLE
       const role = await contract.getRole(connectAccount);
       setRole(role);
-      //GET MY FRIEND LIST
-      const friendLists = await contract.getMyFriendList();
+      //GET MY FRIEND LIST - disabled
+      // const friendLists = await contract.getMyFriendList();
       setFriendLists(friendLists);
-      //GET ALL APP USER LIST
-      const userList = await contract.getAllAppUser();
+      //GET ALL APP USER LIST - disabled
+      // const userList = await contract.getAllAppUser();
       setUserLists(userList);
       console.log('ChatAppContext👍');
       // console.log(role);

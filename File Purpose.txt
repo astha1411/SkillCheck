@@ -4,3 +4,5 @@ apiFeature -> general utilities required by the smart contract
 ChatAppContext ->exports context for initialising contract, connecting account and fetching data on page load, functions that are 
 the interface between web page and smart contract. 
 Model.jsx -> lays over the current page. used for taking input. can be used for add skill, add exp etc
+index.jsx -> root page. basic redirect is to here
+pages folder -> various pages are kept here
