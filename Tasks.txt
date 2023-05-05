@@ -1,2 +1,7 @@
 1. redirect to different pages depending on role of user
     see how to get props to this page
+2. redirect to exp page, quizpage 
+
+3. make internal functions public
+4. see possible architectures for smart contract: 
+    separate data storage, functions
