@@ -37,4 +37,29 @@ interface IChatApp {
         string[] skillsRequired;
     }
 
+    struct applications {
+        bytes32 applicationsID;
+        bytes32 jobID;
+        address userID;
+        string applicationStatus; //ongoing,selected,rejected. can use uint8, but packing wise it will still take 256bits
+    }
+
+    struct question {
+        // bytes32 questionID;
+        string questionLine;
+        string option1; //by default radio button value should be: ""
+        string option2;
+        string option3;
+        string option4;
+        uint8 answer; //1,2,3,4
+    }
+
+    struct proposedQuestion {
+        bytes32 proposedQuestionID;
+        bytes32 questionID;
+        string skill;
+        uint8 acceptances; // crosses 5 -> accept -> push into quiz
+        uint8 rejections; // crosses 5 -> delete
+    }
+
 }

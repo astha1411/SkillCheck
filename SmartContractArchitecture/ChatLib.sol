@@ -194,7 +194,6 @@ library ChatLib {
     //ADD JOB
     function _addJob(
     mapping(bytes32 => IChatApp.job) storage jobMap,
-    // bytes32[] allJobIDs,
     mapping(address => bytes32[]) storage orgJobPostings,
     mapping(address => IChatApp.account) storage accountList,
     string calldata role,
@@ -225,4 +224,226 @@ library ChatLib {
     orgJobPostings[msg.sender].push(jobID);
     return jobID;
 }
+
+    //GET ALL JOBS
+    function _getAllJobs(
+        mapping(bytes32 => IChatApp.job) storage jobMap,
+        bytes32[] storage allJobIDs,
+        uint allJobIDslength
+    ) public view returns (IChatApp.job[] memory) {
+        uint count = 0;
+        for (uint i = 0; i < allJobIDslength; i++) {
+            if (jobMap[allJobIDs[i]].openingsLeft != 0) {
+                count++;
+            }
+        }
+        IChatApp.job[] memory openJobs = new IChatApp.job[](count);
+        uint j = 0;
+        for (uint i = 0; i < allJobIDslength; i++) {
+            if (jobMap[allJobIDs[i]].openingsLeft != 0) {
+                openJobs[j] = jobMap[allJobIDs[i]];
+                j++;
+            }
+        }
+        return openJobs;
+    }
+
+    //GET YOUR JOBS
+    function _getJobs(
+        mapping(bytes32 => IChatApp.job) storage jobMap,
+        mapping(address => bytes32[]) storage orgJobPostings
+    ) external view returns (IChatApp.job[] memory) {
+        uint l = orgJobPostings[msg.sender].length;
+        IChatApp.job[] memory jobs = new IChatApp.job[](l);
+        for (uint i = 0; i < l; i++) {
+            jobs[i] = jobMap[orgJobPostings[msg.sender][i]];
+        }
+        return jobs;
+    }
+
+    //GET ALL JOBS BY IDS (INPUT ARRAY OF JOBIDS, RETURN ARRAY OF JOBS)
+    function _getAllJobsByIDs(
+        mapping(bytes32 => IChatApp.job) storage jobMap,
+        bytes32[] memory jobIDs
+    ) public view returns (IChatApp.job[] memory) {
+        uint length = jobIDs.length;
+        IChatApp.job[] memory jobs = new IChatApp.job[](length);
+
+        for (uint i = 0; i < length; i++) {
+            jobs[i] = jobMap[jobIDs[i]];
+        }
+
+        return jobs;
+    }
+
+    //VERIFY SKILL REQ OF JOB ARE MET
+    function _VerifySkillReq(
+        mapping(bytes32 => IChatApp.job) storage jobMap,
+        mapping(address => string[]) storage userSkillList,
+        bytes32 jobID
+        ) public view returns (bool) {
+
+        string[] storage requiredSkills = jobMap[jobID].skillsRequired;
+        string[] storage userSkills = userSkillList[msg.sender];
+
+        uint i = 0;
+        uint j = 0;
+
+        while (i < requiredSkills.length && j < userSkills.length) {
+            bytes memory reqSkill = bytes(requiredSkills[i]);
+            bytes memory userSkill = bytes(userSkills[j]);
+
+            if (keccak256(reqSkill) == keccak256(userSkill)) {
+                i++;
+                j++;
+            } else {
+                if (userSkill[0] < reqSkill[0]) {
+                    j++;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return (i == requiredSkills.length);
+    }
+
+    //CHECKALREADYAPPLIED
+    function _checkAlreadyApplied(
+        mapping(bytes32 => IChatApp.applications) storage applicationsMap,
+        mapping(bytes32 => bytes32[]) storage jobApplicantList,
+        bytes32 jobID
+        ) public view returns (bool) {
+    bytes32[] memory _applications = jobApplicantList[jobID];
+    for (uint256 i = 0; i < _applications.length; i++) {
+        IChatApp.applications memory application = applicationsMap[_applications[i]];
+        if (application.userID == msg.sender) {
+            return true;
+        }
+    }
+    return false;
+}
+
+//APPLY TO JOB
+    function _applyToJob(
+        mapping(bytes32 => IChatApp.applications) storage applicationsMap,
+        mapping(bytes32 => bytes32[]) storage jobApplicantList,
+        mapping(address => bytes32[]) storage userApplicationList,
+        bytes32 jobID
+        ) public {
+        bytes32 applicationsID = keccak256(
+                abi.encodePacked(jobID, msg.sender)
+            );
+        IChatApp.applications memory newApplication = IChatApp.applications(
+            applicationsID,
+            jobID,
+            msg.sender,
+            "ongoing"
+        );
+        applicationsMap[applicationsID] = newApplication;
+        jobApplicantList[jobID].push(applicationsID);
+        userApplicationList[msg.sender].push(applicationsID);
+    }
+
+        //ACCEPT APPLICANT
+    function _selectApplicant(
+        mapping(bytes32 => IChatApp.applications) storage applicationsMap,
+        mapping(bytes32 => IChatApp.job) storage jobMap,
+        bytes32 applicationID
+        ) public {
+    // Retrieve application details from the applicationsMap
+    IChatApp.applications storage application = applicationsMap[applicationID];
+
+    // Ensure the application is not already selected or rejected
+    require(
+        keccak256(bytes(application.applicationStatus)) ==
+        keccak256(bytes("ongoing")),
+        "Application has already been processed"
+    );
+
+    // Update application status to "selected"
+    application.applicationStatus = "selected";
+
+    // Decrement openingsLeft by 1
+    bytes32 jobID = application.jobID;
+    IChatApp.job storage jobDetails = jobMap[jobID];
+    require(jobDetails.openingsLeft > 0, "No openings left");
+    jobDetails.openingsLeft--;
+
+    // Update job status to false if openingsLeft is 0
+    if (jobDetails.openingsLeft == 0) {
+        jobDetails.jobStatus = false;
+    }
+}
+
+    // GET QUESTION ID
+
+    function _getQuestionID(
+        string memory questionLine,
+        string memory option1,
+        string memory option2,
+        string memory option3,
+        string memory option4,
+        uint8 answer
+    ) internal pure returns (bytes32) {
+        return
+            keccak256(
+                abi.encodePacked(
+                    questionLine,
+                    option1,
+                    option2,
+                    option3,
+                    option4,
+                    answer
+                )
+            );
+    }
+
+    //ADD QUESTION (BEFORE APPROVAL)
+    function _addQuestion(
+        mapping(bytes32 => IChatApp.question) storage questionMap,
+        IChatApp.proposedQuestion[] storage proposedQuestionList,
+        string memory questionLine,
+        string memory option1,
+        string memory option2,
+        string memory option3,
+        string memory option4,
+        uint8 answer,
+        string memory skill
+    ) external {
+        bytes32 questionID = _getQuestionID(
+            questionLine,
+            option1,
+            option2,
+            option3,
+            option4,
+            answer
+        );
+
+        questionMap[questionID] = IChatApp.question({
+            questionLine: questionLine,
+            option1: option1,
+            option2: option2,
+            option3: option3,
+            option4: option4,
+            answer: answer
+        });
+        //if question is approved, only then is it pushed into quizMap
+        // quizMap[skill].push(questionID);
+
+        bytes32 proposedQuestionID = keccak256(
+            abi.encodePacked(msg.sender, questionID)
+        );
+        proposedQuestionList.push(
+            IChatApp.proposedQuestion({
+                proposedQuestionID: proposedQuestionID,
+                questionID: questionID,
+                skill: skill,
+                acceptances: 0,
+                rejections: 0
+            })
+        );
+        // proposedQuestionsByOrgList[msg.sender].push(proposedQuestionID);
+    }
+
 }

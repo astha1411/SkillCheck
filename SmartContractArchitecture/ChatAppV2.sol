@@ -23,6 +23,14 @@ contract ChatAppV2 is IChatApp {
     mapping(bytes32 => job) private _jobMap;
     bytes32[] allJobIDs;
     mapping(address => bytes32[]) private _orgJobPostings;
+
+    mapping(bytes32 => applications) _applicationsMap;//stores all applications as bytes32 for lighter and faster access
+    mapping(bytes32 => bytes32[]) _jobApplicantList; //to see list of applicants for a job
+    mapping(address => bytes32[]) _userApplicationList; //to see list of jobs a user has applied to and their status
+
+    mapping(bytes32 => question) _questionMap;
+    mapping(string => bytes32[]) _quizMap; //to store all questions for a relevant skill (string)
+    proposedQuestion[] _proposedQuestionList;//SCOPE OF IMPROVEMENT HERE. CAN USE MAP, SINCE WE HAVE TO ITERATE OVER THE LIST IN MANY FUNCTIONS  
     //----------------------------------------
 
     //CHECK ACCOUNT EXIST
@@ -106,4 +114,143 @@ contract ChatAppV2 is IChatApp {
         bytes32 jobID = ChatLib._addJob(_jobMap, _orgJobPostings, _accountList, role, location, package, openingsTotal, skillsRequired);
         allJobIDs.push(jobID);
     }
+
+    //GET ALL JOBS
+    function getAllJobs() public view returns (job[] memory) {
+        return ChatLib._getAllJobs(_jobMap, allJobIDs, allJobIDs.length);
+    }
+
+    //GET YOUR JOBS
+    function getJobs() external view returns (job[] memory) {
+        return ChatLib._getJobs(_jobMap, _orgJobPostings);
+    }
+
+    //GET ORG's JOB IDS
+    function getJobIDByOrg(
+        address account
+    ) public view returns (bytes32[] memory) {
+        return _orgJobPostings[account];
+    }
+
+    //GET ALL JOB IDS
+    function getAllJobIDs() public view returns (bytes32[] memory) {
+        return allJobIDs;
+    }
+
+    //GET ALL JOBS BY IDS (INPUT ARRAY OF JOBIDS, RETURN ARRAY OF JOBS)
+    function getAllJobsByIDs(
+        bytes32[] memory jobIDs
+    ) public view returns (job[] memory) {
+        return ChatLib._getAllJobsByIDs(_jobMap, jobIDs);
+    }
+
+    //GET JOB DETAILS (GET DETAILS OF SINGLE JOB)
+    function getJobDetails(bytes32 jobID) public view returns (job memory) {
+        require(_jobMap[jobID].orgID != address(0), "Job does not exist");
+        return _jobMap[jobID];
+    }
+
+    //VERIFY SKILL REQ OF JOB ARE MET
+    function VerifySkillReq(bytes32 jobID) public view returns (bool) {
+        require(!getRole2(msg.sender), "Account is not User type");
+        return ChatLib._VerifySkillReq(_jobMap, _userSkillList, jobID);
+    }
+
+    //CHECKALREADYAPPLIED
+    function checkAlreadyApplied(bytes32 jobID) public view returns (bool) {
+        return ChatLib._checkAlreadyApplied(_applicationsMap,_jobApplicantList, jobID);
+    }
+
+    //APPLY TO JOB
+    function applyToJob(bytes32 jobID) public {
+        require(
+            !checkAlreadyApplied(jobID),
+            "User has already applied for the job."
+        );
+        require(
+            VerifySkillReq(jobID),
+            "User does not meet the required skills for the job."
+        );
+        ChatLib._applyToJob(_applicationsMap, _jobApplicantList, _userApplicationList, jobID);
+    }
+
+    //GET YOUR APPLICANTS (FOR ORG)
+    function getApplicants(bytes32 jobID) public view returns (bytes32[] memory, address[] memory, string[] memory, string[] memory, bytes32[] memory) {
+    bytes32[] memory applicationIDs = _jobApplicantList[jobID];
+    uint256 numApplicants = applicationIDs.length;
+    bytes32[] memory jobIDs = new bytes32[](numApplicants);
+    address[] memory userIDs = new address[](numApplicants);
+    string[] memory names = new string[](numApplicants);
+    string[] memory statuses = new string[](numApplicants);
+    
+
+    for (uint256 i = 0; i < numApplicants; i++) {
+        bytes32 applicationID = applicationIDs[i];
+        applications memory currentApplication = _applicationsMap[applicationID];
+        jobIDs[i] = currentApplication.jobID;
+        userIDs[i] = currentApplication.userID;
+        names[i] = _accountList[userIDs[i]].name;
+        statuses[i] = currentApplication.applicationStatus;
+    }
+
+    return (jobIDs, userIDs, names, statuses, applicationIDs);
+}
+
+
+    //GET YOUR APPLICATIONS (FOR USER)
+    function getYourApplications()
+        public
+        view
+        returns (
+            bytes32[] memory,
+            string[] memory,
+            string[] memory,
+            string[] memory
+        )
+    {
+        bytes32[] memory applicationIDs = _userApplicationList[msg.sender];
+        uint256 numApplications = applicationIDs.length;
+        bytes32[] memory jobIDs = new bytes32[](numApplications);
+        string[] memory orgNames = new string[](numApplications);
+        string[] memory roles = new string[](numApplications);
+        string[] memory statuses = new string[](numApplications);
+        
+        for (uint256 i = 0; i < numApplications; i++) {
+            bytes32 applicationID = applicationIDs[i];
+            applications memory applicationDetails = _applicationsMap[applicationID];
+            jobIDs[i] = applicationDetails.jobID;
+            job memory jobDetails = _jobMap[jobIDs[i]];
+            orgNames[i] = jobDetails.orgName;
+            roles[i] = jobDetails.role;
+            statuses[i] = applicationDetails.applicationStatus;
+        }
+        
+        return (jobIDs, orgNames, roles, statuses);
+    }
+
+    //ACCEPT APPLICANT
+    function selectApplicant(bytes32 applicationID) public {
+        ChatLib._selectApplicant(_applicationsMap, _jobMap, applicationID);
+
+    }
+
+    //REJECT APPLICANT
+    function rejectApplicant(bytes32 applicationID) public {
+    require(_applicationsMap[applicationID].userID == msg.sender, "You are not authorized to reject this application.");
+    _applicationsMap[applicationID].applicationStatus = "rejected";
+}
+
+    // ADD QUESTION (BEFORE APPROVAL)
+    function addQuestion(
+        string memory questionLine,
+        string memory option1,
+        string memory option2,
+        string memory option3,
+        string memory option4,
+        uint8 answer,
+        string memory skill
+    ) external {
+        ChatLib._addQuestion(_questionMap, _proposedQuestionList, questionLine, option1, option2, option3, option4, answer, skill);
+    }
+
 }
