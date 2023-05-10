@@ -4,7 +4,8 @@ import Image from "next/image";
 //INTERNAL IMPORT
 import Style from "./UserCard.module.css";
 import images from "../../assets";
-const UserCard = ({ el, i, addFriends }) => {
+const UserCard = ({ el, i }) => {
+// const UserCard = ({ el, i, addFriends }) => {
   return (
     <div className={Style.UserCard}>
       <div className={Style.UserCard_box}>
@@ -19,9 +20,11 @@ const UserCard = ({ el, i, addFriends }) => {
         <div className={Style.UserCard_box_info}>
           <h3>{el.name}</h3>
           {
-            el.role == true ? <h3>user</h3> : <h3>organisation</h3>
+            el[8] == true ? <h3>user</h3> : <h3>organisation</h3>
+            
           }
-          <p>{el.accountAddress.slice(0, 25)}..</p>
+          {console.log(i)}
+          {/* <p>{el.accountAddress.slice(0, 25)}..</p> */}
           <button
             // onClick={() =>
             //   addFriends({ name: el.name, userAddress: el.accountAddress })

@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./IChatApp.sol";
 import "./ChatLib.sol";
+import "./ChatLib2.sol";
 
 contract ChatAppV2 is IChatApp {
     mapping(address => account) private _accountList;
@@ -163,14 +164,14 @@ contract ChatAppV2 is IChatApp {
 
     //APPLY TO JOB
     function applyToJob(bytes32 jobID) public {
-        require(
-            !checkAlreadyApplied(jobID),
-            "User has already applied for the job."
-        );
-        require(
-            VerifySkillReq(jobID),
-            "User does not meet the required skills for the job."
-        );
+        // require(
+        //     !checkAlreadyApplied(jobID),
+        //     "User has already applied for the job."
+        // );
+        // require(
+        //     VerifySkillReq(jobID),
+        //     "User does not meet the required skills for the job."
+        // );
         ChatLib._applyToJob(_applicationsMap, _jobApplicantList, _userApplicationList, jobID);
     }
 
@@ -252,5 +253,84 @@ contract ChatAppV2 is IChatApp {
     ) external {
         ChatLib._addQuestion(_questionMap, _proposedQuestionList, questionLine, option1, option2, option3, option4, answer, skill);
     }
+
+
+    //VIEW QUIZ (BY SKILL)
+    function getQuestions(
+        string memory skill
+    ) public view returns (question[] memory) {
+        return ChatLib._getQuestions(_questionMap, _quizMap, skill);
+    }
+
+    //VIEW PENDING APPROVALS
+    function viewPendingApprovals() public view returns (ProposedQuestionWithDetails[] memory) {
+        return ChatLib2._viewPendingApprovals(_questionMap, _proposedQuestionList);
+    }
+
+    //ACCEPT PROPOSED QUESTION
+    function acceptProposedQuestion(bytes32 proposedQuestionID) external {
+        ChatLib2._acceptProposedQuestion(_proposedQuestionList, _quizMap, proposedQuestionID);
+    }
+
+    //REJECT PROPOSED QUESTION
+    function rejectProposedQuestion(bytes32 proposedQuestionID) external {
+        ChatLib2._rejectProposedQuestion(_proposedQuestionList, proposedQuestionID);
+    }
+    //=================================
+    
+
+    AllUserStruck[] getAllUsers;
+
+    mapping(address => user) userList;
+    mapping(bytes32 => message[]) allMessages;
+
+    //CHECK USER EXIST
+    function checkUserExists(address pubkey) public view returns (bool) {
+        return bytes(userList[pubkey].name).length > 0;
+    }
+
+    //CREATE ACCOUNT
+    function createAccount(string calldata name, bool role) external {
+    }
+
+    //GET USERNAME
+    function getUsername(address pubkey) external view returns (string memory) {
+        return userList[pubkey].name;
+    }
+
+    //GET ROLE
+    function getRole(address pubkey) external view returns (bool) {
+        return userList[pubkey].role;
+    }
+
+    //ADD FRIENDS
+    function addFriend(address friend_key, string calldata name) external {
+    }
+
+    //checkAlreadyFriends
+    function checkAlreadyFriends(
+        address pubkey1,
+        address pubkey2
+    ) internal view returns (bool) {
+        return false;
+    }
+
+    
+
+    //GETMY FRIEND
+    function getMyFriendList() external view returns (friend[] memory) {
+        return userList[msg.sender].friendList;
+    }
+
+    //SEND MESSAGE
+    function sendMessage(address friend_key, string calldata _msg) external {
+    }
+
+    
+
+    function getAllAppUser() public view returns (AllUserStruck[] memory) {
+        return getAllUsers;
+    }
+
 
 }

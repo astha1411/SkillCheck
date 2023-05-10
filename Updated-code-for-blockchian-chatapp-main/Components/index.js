@@ -6,5 +6,6 @@ import Model from "./Model/Model";
 import Model2 from "./Model2/Model2";
 import UserCard from "./UserCard/UserCard";
 import Friend from "./Friend/Friend";
+import JobPage from "./JobPage/JobPage";
 
-export { NavBar, Filter, Error, Loader, Model, Model2, UserCard, Friend };
+export { NavBar, Filter, Error, Loader, Model, Model2, UserCard, Friend, JobPage };

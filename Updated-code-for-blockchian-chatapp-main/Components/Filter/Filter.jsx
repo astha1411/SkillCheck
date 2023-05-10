@@ -8,13 +8,14 @@ import { ChatAppContect } from "../../Context/ChatAppContext";
 import { Model2 } from "../index";
 
 const Filter = () => {
-  const { account, addFriends, yourJobs, addJob } = useContext(ChatAppContect);
+  // const { account, addFriends, yourJobs, addJob } = useContext(ChatAppContect);
+  const { account, yourJobs, addJob } = useContext(ChatAppContect);
 
   //USESTATE
   const [addFriend, setAddFriend] = useState(false);
   function handleAddFriendClick() {
     setAddFriend(true);
-  }
+  }//const [job, setJob] = useState([0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde1","Bombay","12,00,000INR","1 Total","1 Left",false,"C++"]);
   return (
     <div className={Style.Filter}>
       <div className={Style.Filter_box}>

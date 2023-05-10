@@ -16,19 +16,19 @@ export const ChatAppProvider = ({ children }) => {
   //USESTATE
   const [account, setAccount] = useState("");
   const [userName, setUserName] = useState("");
-  const [friendLists, setFriendLists] = useState([]);
+  // const [friendLists, setFriendLists] = useState([]);
   const [friendMsg, setFriendMsg] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [userLists, setUserLists] = useState([]);
+  const [userLists, setUserLists] = useState([[[0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde1","Bombay","12,00,000INR","1 Total","1 Left",true,"C++"],[0x8c84ea25bf347081ae18db0d8789a8f3a12fc598631e4ed824ef6a117bbb94d0,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde2","Delhi","15,00,000INR","2 Total","2 Left",false,"JS"]]]);
   const [error, setError] = useState("");
   const [role, setRole] = useState("");
   const [yourJobs, setYourJobs] = useState([[[0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde1","Bombay","12,00,000INR","1 Total","1 Left",false,"C++"],[0x8c84ea25bf347081ae18db0d8789a8f3a12fc598631e4ed824ef6a117bbb94d0,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde2","Delhi","15,00,000INR","2 Total","2 Left",false,"JS"]]]);
   const [applicants, setApplicants] = useState({
-    jobIDs: [],
-    userIDs: [],
-    names: [],
-    statuses: [],
-    applicationIDs: [],
+    jobIDs: [0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c],
+    userIDs: [0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0x617F2E2fD72FD9D5503197092aC168c91465E7f2,0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db],
+    names: ["Krutin","Apurv","Akshad","Krutin"],
+    statuses: ["ongoing","ongoing","ongoing","ongoing"],
+    applicationIDs: [0xc25548d6895002141bfdf14576245b332750d4f934e552c3525e8c8938047f3b,0x9390c98c523b0ed9d84414014c97a62f03b2866535a70a9c1383bec86ee94eb3,0x9e6077cd4a21cfd917c1ba980c0ef818821b1fa159c4c329d8e319d2e61b4445,0xc25548d6895002141bfdf14576245b332750d4f934e552c3525e8c8938047f3b],
   });
   
 
@@ -47,17 +47,18 @@ export const ChatAppProvider = ({ children }) => {
       const connectAccount = await connectWallet();//connect wallet returns an account type
       setAccount(connectAccount);
       //GET USER NAME
-      const userName = await contract.getUsername(connectAccount);
+      const userName = await contract.getUsername2(connectAccount);
       setUserName(userName);
       //GET ROLE
-      const role = await contract.getRole(connectAccount);
+      const role = await contract.getRole2(connectAccount);
       setRole(role);
       //GET MY FRIEND LIST - disabled
       // const friendLists = await contract.getMyFriendList();
-      setFriendLists(friendLists);
+      // setFriendLists(friendLists);
       //GET ALL APP USER LIST - disabled
       // const userList = await contract.getAllAppUser();
-      setUserLists(userList);
+      // setUserLists(userList);
+      // contract.createAccount2
       console.log('ChatAppContext👍');
       // console.log(role);
       // console.log(currentUserAddress);
@@ -71,15 +72,15 @@ export const ChatAppProvider = ({ children }) => {
   }, []);
 
   //READ MESSAGE
-  const readMessage = async (friendAddress) => {
-    try {
-      const contract = await connectingWithContract();
-      const read = await contract.readMessage(friendAddress);
-      setFriendMsg(read);
-    } catch (error) {
-      console.log("Currently You Have no Message");
-    }
-  };
+  // const readMessage = async (friendAddress) => {
+  //   try {
+  //     const contract = await connectingWithContract();
+  //     const read = await contract.readMessage(friendAddress);
+  //     setFriendMsg(read);
+  //   } catch (error) {
+  //     console.log("Currently You Have no Message");
+  //   }
+  // };
 
   //CREATE ACCOUNT
   const createAccount = async ({ name, role }) => {
@@ -90,7 +91,7 @@ export const ChatAppProvider = ({ children }) => {
 
       const contract = await connectingWithContract();
       console.log(contract);
-      const getCreatedUser = await contract.createAccount(name, role);
+      const getCreatedUser = await contract.createAccount2(name, role);
 
       setLoading(true);
       await getCreatedUser.wait();
@@ -138,7 +139,7 @@ export const ChatAppProvider = ({ children }) => {
   //READ INFO
   const readUser = async (userAddress) => {
     const contract = await connectingWithContract();
-    const userName = await contract.getUsername(userAddress);
+    const userName = await contract.getUsername2(userAddress);
     setCurrentUserName(userName);
     setCurrentUserAddress(userAddress);
   };
@@ -193,9 +194,9 @@ export const ChatAppProvider = ({ children }) => {
   return (
     <ChatAppContect.Provider
       value={{
-        readMessage,
+        // readMessage,
         createAccount,
-        addFriends,
+        // addFriends,
         sendMessage,
         readUser,
         connectWallet,
@@ -204,7 +205,7 @@ export const ChatAppProvider = ({ children }) => {
         addJob,
         account,
         userName,
-        friendLists,
+        // friendLists,
         friendMsg,
         userLists,
         loading,
@@ -212,7 +213,8 @@ export const ChatAppProvider = ({ children }) => {
         currentUserName,
         currentUserAddress,
         role,
-        yourJobs
+        yourJobs,
+        applicants
       }}
     >
       {children}

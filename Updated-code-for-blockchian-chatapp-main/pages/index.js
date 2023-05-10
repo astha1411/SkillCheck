@@ -3,14 +3,13 @@ import { useRouter } from 'next/router';
 
 //INTERNAL IMPORT
 import { ChatAppContect } from "../Context/ChatAppContext";
-import { Filter, Friend } from "../Components/index";
 
 const ChatApp = () => {
   const router = useRouter();
   const {ChechIfWalletConnected, role} = useContext(ChatAppContect);
   useEffect(()=> {
     ChechIfWalletConnected();
-    const targetPage = role ? '/orgHome' : '/userHome';
+    const targetPage = role ? '/orgHome' : '/orgHome';
     router.push(targetPage);
   }, [role, router]);
   // },[]);

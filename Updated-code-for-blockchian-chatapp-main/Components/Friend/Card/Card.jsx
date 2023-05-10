@@ -6,7 +6,8 @@ import Link from "next/link";
 import Style from "./Card.module.css";
 import images from "../../../assets";
 
-const Card = ({ readMessage, el, i, readUser }) => {
+// const Card = ({ readMessage, el, i, readUser }) => {
+const Card = ({el, i, readUser }) => {
   console.log(el);
   return (
     <Link
@@ -17,7 +18,7 @@ const Card = ({ readMessage, el, i, readUser }) => {
     >
       <div
         className={Style.Card}
-        onClick={() => (readMessage(el.pubkey), readUser(el.pubkey))}
+        onClick={() => ( readUser(el.pubkey))}
       >
         <div className={Style.Card_box}>
           <div className={Style.Card_box_left}>

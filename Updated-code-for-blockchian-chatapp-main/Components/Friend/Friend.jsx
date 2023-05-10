@@ -14,8 +14,8 @@ const Friend = () => {
   const {
     sendMessage,
     account,
-    friendLists,
-    readMessage,
+    // friendLists,
+    // readMessage,
     userName,
     loading,
     friendMsg,
@@ -42,7 +42,7 @@ const Friend = () => {
         <div >
           <Chat
             functionName={sendMessage}
-            readMessage={readMessage}
+            // readMessage={readMessage}
             friendMsg={friendMsg}
             account={account}
             userName={userName}

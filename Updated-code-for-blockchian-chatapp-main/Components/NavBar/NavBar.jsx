@@ -11,19 +11,19 @@ import images from "../../assets";
 const NavBar = () => {
   const menuItems = [
     {
-      menu: "All Users",
-      link: "alluser",
+      menu: "JOB",
+      link: "basic",
     },
     {
       menu: "HOME",
       link: "/",
     },
     {
-      menu: "CONTACT",
-      link: "basic",
+      menu: "EXPERIENCES",
+      link: "alluser",
     },
     {
-      menu: "SETTING",
+      menu: "QUIZ",
       link: "/",
     },
   ];
@@ -127,10 +127,10 @@ const NavBar = () => {
         <div className={Style.modelBox}>
           <Model
             openBox={setOpenModel}
-            title="WELCOME TO"
-            head="CHAT BUDDY"
-            info="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate maxime assumenda exercitationem voluptatibus, vero aliquid in tempore aut, impedit dolores voluptate recusandae nulla fuga? Praesentium iusto mollitia sint fugit! Placeat?"
-            smallInfo="Kindley seclet your name..."
+            title="SIGN UP"
+            head="to SkillCheck"
+            info="Recruitment Portal using Blockchain Based Skill Verification"
+            smallInfo="Please enter Details"
             image={images.hero}
             functionName={createAccount}
             address={account}

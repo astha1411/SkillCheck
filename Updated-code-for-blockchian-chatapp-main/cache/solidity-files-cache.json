@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\kruti\\vscode\\JS\\LY-skillcheck\\SkillCheck4\\Updated-code-for-blockchian-chatapp-main\\contracts\\ChatApp.sol": {
-      "lastModificationDate": 1682994839858,
-      "contentHash": "f2b14f5c63024b1e8e157ae792a58288",
+      "lastModificationDate": 1683706053265,
+      "contentHash": "bba3302faa313b23e324d1c27d30f4cf",
       "sourceName": "contracts/ChatApp.sol",
       "solcConfig": {
         "version": "0.8.17",
@@ -34,6 +34,154 @@
       ],
       "artifacts": [
         "ChatApp"
+      ]
+    },
+    "C:\\Users\\kruti\\vscode\\JS\\LY-skillcheck\\SkillCheck4\\Updated-code-for-blockchian-chatapp-main\\contracts\\ChatAppV2.sol": {
+      "lastModificationDate": 1683712512070,
+      "contentHash": "f144da33397727ea2df81e520a44fca8",
+      "sourceName": "contracts/ChatAppV2.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IChatApp.sol",
+        "./ChatLib.sol",
+        "./ChatLib2.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ChatAppV2"
+      ]
+    },
+    "C:\\Users\\kruti\\vscode\\JS\\LY-skillcheck\\SkillCheck4\\Updated-code-for-blockchian-chatapp-main\\contracts\\IChatApp.sol": {
+      "lastModificationDate": 1683712537617,
+      "contentHash": "ab08dc57021ba3a0503d5c88aa558b11",
+      "sourceName": "contracts/IChatApp.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IChatApp"
+      ]
+    },
+    "C:\\Users\\kruti\\vscode\\JS\\LY-skillcheck\\SkillCheck4\\Updated-code-for-blockchian-chatapp-main\\contracts\\ChatLib.sol": {
+      "lastModificationDate": 1683712524626,
+      "contentHash": "7985f8e10610d6d4e2a76550392a10c1",
+      "sourceName": "contracts/ChatLib.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IChatApp.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ChatLib"
+      ]
+    },
+    "C:\\Users\\kruti\\vscode\\JS\\LY-skillcheck\\SkillCheck4\\Updated-code-for-blockchian-chatapp-main\\contracts\\ChatLib2.sol": {
+      "lastModificationDate": 1683712559146,
+      "contentHash": "54d32df46a2ad9aa90d4bc02993193cb",
+      "sourceName": "contracts/ChatLib2.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IChatApp.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ChatLib2"
       ]
     }
   }

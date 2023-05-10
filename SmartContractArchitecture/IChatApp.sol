@@ -62,4 +62,38 @@ interface IChatApp {
         uint8 rejections; // crosses 5 -> delete
     }
 
+    struct ProposedQuestionWithDetails {
+    bytes32 proposedQuestionID;
+    bytes32 questionID;
+    string skill;
+    string questionLine;
+    string option1;
+    string option2;
+    string option3;
+    string option4;
+    uint8 answer;
+}
+struct user {
+        string name;
+        bool role; //0 means user, 1 means organisation
+        friend[] friendList;
+    }
+
+    struct friend {
+        address pubkey;
+        string name;
+    }
+
+    struct message {
+        address sender;
+        uint256 timestamp;
+        string msg;
+    }
+
+    struct AllUserStruck {
+        string name;
+        bool role;
+        address accountAddress;
+    }
+
 }

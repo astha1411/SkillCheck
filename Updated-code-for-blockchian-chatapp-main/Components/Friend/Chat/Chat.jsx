@@ -10,7 +10,7 @@ import { Loader } from "../../index";
 
 const Chat = ({
   functionName,
-  readMessage,
+  // readMessage,
   friendMsg,
   account,
   userName,
@@ -20,12 +20,10 @@ const Chat = ({
   readUser,
   yourJobs
 }) => {
-  //USTE STATE
+  //USE STATE
   const [message, setMessage] = useState("");
-  // const [chatData, setChatData] = useState({
-  //   name: "",
-  //   address: "",
-  // });
+  const [targetPage, setTargetPage] = useState('/');
+  
 
   const router = useRouter();
 
@@ -43,8 +41,9 @@ const Chat = ({
     // }
   }, []);
 
-  function jobRedirect(param) {
+  async function jobRedirect(param) {
     // Do something when the button is clicked
+    console.log(param);
   }
 
   // console.log(chatData.address, chatData.name);

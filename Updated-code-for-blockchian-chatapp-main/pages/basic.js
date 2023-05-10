@@ -1,8 +1,12 @@
 import React from 'react'
 
+import { JobPage } from "../Components/index";
+
 const basic = () => {
   return (
-    <div>basic</div>
+    <div>
+      <JobPage/>
+    </div>
   )
 }
 

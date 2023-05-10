@@ -342,7 +342,6 @@ contract ChatApp {
         return jobs;
     }
 
-    //TODO: MODIFY JOBS TO INCLUDE JOBID, CLICK ON A JOB TO BE REDIRECTED TO JOB PAGE
 
     //GET ORG's JOB IDS
     function getJobIDByOrg(
@@ -797,26 +796,7 @@ contract ChatApp {
         // _addFriend(friend_key, msg.sender, userList[msg.sender].name);
     }
 
-    //checkAlreadyFriends
-    function checkAlreadyFriends(
-        address pubkey1,
-        address pubkey2
-    ) internal view returns (bool) {
-        // if (
-        //     userList[pubkey1].friendList.length >
-        //     userList[pubkey2].friendList.length
-        // ) {
-        //     address tmp = pubkey1;
-        //     pubkey1 = pubkey2;
-        //     pubkey2 = tmp;
-        // }
-
-        // for (uint256 i = 0; i < userList[pubkey1].friendList.length; i++) {
-        //     if (userList[pubkey1].friendList[i].pubkey == pubkey2) return true;
-        // }
-        return false;
-    }
-
+    
     function _addFriend(
         address me,
         address friend_key,
@@ -857,12 +837,12 @@ contract ChatApp {
     }
 
     //READ MESSAGE
-    function readMessage(
-        address friend_key
-    ) external view returns (message[] memory) {
-        bytes32 chatCode = _getChatCode(msg.sender, friend_key);
-        return allMessages[chatCode];
-    }
+    // function readMessage(
+    //     address friend_key
+    // ) external view returns (message[] memory) {
+    //     bytes32 chatCode = _getChatCode(msg.sender, friend_key);
+    //     return allMessages[chatCode];
+    // }
 
     function getAllAppUser() public view returns (AllUserStruck[] memory) {
         return getAllUsers;

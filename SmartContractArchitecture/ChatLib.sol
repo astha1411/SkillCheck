@@ -446,4 +446,18 @@ library ChatLib {
         // proposedQuestionsByOrgList[msg.sender].push(proposedQuestionID);
     }
 
+    //VIEW QUIZ (BY SKILL)
+    function _getQuestions(
+        mapping(bytes32 => IChatApp.question) storage questionMap,
+        mapping(string => bytes32[]) storage quizMap,
+        string memory skill
+    ) public view returns (IChatApp.question[] memory) {
+        bytes32[] storage questions = quizMap[skill];
+        uint256 numQuestions = questions.length;
+        IChatApp.question[] memory quizQuestions = new IChatApp.question[](numQuestions);
+        for (uint256 i = 0; i < numQuestions; i++) {
+            quizQuestions[i] = questionMap[questions[i]];
+        }
+        return quizQuestions;
+    }
 }

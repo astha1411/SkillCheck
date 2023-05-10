@@ -1,0 +1,10 @@
+IChatApp:
+    define all data structures 
+
+ChatLib:
+    define functions with their code
+    for accessing maps, needs to interact with what is passed by ChatAppV2
+
+ChatAppV2:
+    inherits IChatApp
+    all mappings are actually declared and stored here
