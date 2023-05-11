@@ -1,12 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 //INTERNAL IMPORT
 import { ChatAppContect } from "../Context/ChatAppContext";
-import { Filter, Friend } from "../Components/index";
+import { Filter, Friend, NavBar } from "../Components/index";
 
 const orgHome = () => {
+  const {role} = useContext(ChatAppContect);
   return (
     <div>
-      {console.log("orgHome page")}
+      {console.log("role: "+role)}
+      <NavBar />
       <Filter />
       <Friend />
     </div>

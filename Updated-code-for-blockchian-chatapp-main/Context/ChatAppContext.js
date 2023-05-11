@@ -23,6 +23,8 @@ export const ChatAppProvider = ({ children }) => {
   const [error, setError] = useState("");
   const [role, setRole] = useState("");
   const [yourJobs, setYourJobs] = useState([[[0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde1","Bombay","12,00,000INR","1 Total","1 Left",false,"C++"],[0x8c84ea25bf347081ae18db0d8789a8f3a12fc598631e4ed824ef6a117bbb94d0,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde2","Delhi","15,00,000INR","2 Total","2 Left",false,"JS"]]]);
+  const [allJobs, setAllJobs] = useState([]);
+  const [jobDetails, setJobDetails] = useState([]);
   const [applicants, setApplicants] = useState({
     jobIDs: [0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c],
     userIDs: [0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0x617F2E2fD72FD9D5503197092aC168c91465E7f2,0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db],
@@ -136,7 +138,7 @@ export const ChatAppProvider = ({ children }) => {
     }
   };
 
-  //READ INFO
+  //READ USER (GETUSERNAME2)
   const readUser = async (userAddress) => {
     const contract = await connectingWithContract();
     const userName = await contract.getUsername2(userAddress);
@@ -172,8 +174,28 @@ export const ChatAppProvider = ({ children }) => {
     }
   }
 
+  //GET ALL JOBS
+  const getAllJobs = async () => {
+    try {
+      const contract = await connectingWithContract();
+      const _allJobIDs = await contract.getAllJobIDs();
+      const _allJobs = await contract.getAllJobs(_allJobIDs);
+      setAllJobs(_allJobs);
+    } catch (error) {
+      console.log("No Jobs Posted Yet");
+    }
+  }
   //GET JOB (BY ID)
-  
+  const getJobByID = async (jobID) => {
+    try {
+      const contract = await connectingWithContract();
+      const _jobDetails = await contract.getJobDetails(jobID);
+      setJobDetails(_jobDetails);
+    } catch (error) {
+      console.log("No Jobs Posted Yet");
+    }
+  }
+
   //GET APPLICANTS
   const getApplicants = async (jobID) => {
     try {
@@ -203,6 +225,9 @@ export const ChatAppProvider = ({ children }) => {
         ChechIfWalletConnected,
         getJobs,
         addJob,
+        getAllJobs,
+        getJobByID,
+        getApplicants,
         account,
         userName,
         // friendLists,
@@ -214,7 +239,9 @@ export const ChatAppProvider = ({ children }) => {
         currentUserAddress,
         role,
         yourJobs,
-        applicants
+        applicants,
+        allJobs,
+        jobDetails
       }}
     >
       {children}

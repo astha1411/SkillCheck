@@ -1,8 +1,12 @@
 import React from 'react'
+import { UserNavBar, JobPage } from '../Components/index'
 
 const userHome = () => {
   return (
-    <div>Unknown Error</div>
+    <div>
+      <UserNavBar/>
+      <JobPage/>
+    </div>
   )
 }
 

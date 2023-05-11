@@ -1,10 +1,11 @@
 import React from 'react'
 
-import { JobPage } from "../Components/index";
+import { JobPage, NavBar } from "../Components/index";
 
 const basic = () => {
   return (
     <div>
+      <NavBar />
       <JobPage/>
     </div>
   )

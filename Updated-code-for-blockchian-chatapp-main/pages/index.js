@@ -8,17 +8,18 @@ const ChatApp = () => {
   const router = useRouter();
   const {ChechIfWalletConnected, role} = useContext(ChatAppContect);
   useEffect(()=> {
-    ChechIfWalletConnected();
-    const targetPage = role ? '/orgHome' : '/orgHome';
-    router.push(targetPage);
+    async function fetchData() {
+      
+      await ChechIfWalletConnected();
+      console.log("roleIndex: "+role);
+      const targetPage = role ? '/orgHome' : '/orgHome';
+      router.push(targetPage);
+    }
+    fetchData();
+  
   }, [role, router]);
   // },[]);
   return (
-    // <div>
-    //   {console.log("user role is", role)}
-    //   <Filter />
-    //   <Friend />
-    // </div>
     null
   );
 };

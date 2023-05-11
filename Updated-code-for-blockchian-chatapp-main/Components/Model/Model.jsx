@@ -19,7 +19,7 @@ const Model = ({
 }) => {
   //USESTATE
   const [name, setName] = useState("");
-  const [role, setRole] = useState(true);
+  const [role, setRole] = useState(false);
   const [userAddress, setUserAddress] = useState(address);
 
   const onOptionChange = e => {
@@ -67,7 +67,7 @@ const Model = ({
                   name="role"
                   id="user"
                   value="0"
-                  checked={role}
+                  checked={!role}
                   onChange={onOptionChange}
                 />
                 <label htmlFor="user">User</label>
@@ -77,7 +77,7 @@ const Model = ({
                   name="role"
                   id="organisation"
                   value="1"
-                  checked={!role}
+                  checked={role}
                   onChange={onOptionChange}
                 />
                 <label htmlFor="organisation">Organisation</label>
