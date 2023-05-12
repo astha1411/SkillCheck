@@ -20,7 +20,7 @@ const NavBar = () => {
     },
     {
       menu: "EXPERIENCES",
-      link: "alluser",
+      link: "pastExperiences",
     },
     {
       menu: "QUIZ",

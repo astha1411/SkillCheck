@@ -18,7 +18,7 @@ const Experience = ({
 }) => {
   //USE STATE
   const [message, setMessage] = useState("");
-  const {  userName, experiences, getExperiences} = useContext(ChatAppContect);
+  const {  role,userName, experiences, getExperiences} = useContext(ChatAppContect);
 
   const router = useRouter();
 
@@ -35,9 +35,9 @@ const Experience = ({
     //   readUser(chatData.address);
     // }
 
-    // getExperiences(account);
-    console.log(experiences);
-  }, []);
+     getExperiences(account);
+    console.log("asdf: "+experiences);
+  }, [account]);
 
   // function jobRedirect(param) {
   //   const router = useRouter();

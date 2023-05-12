@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 //INTRNAL IMPORT
-import { UserCard, NavBar } from "../Components/index";
-import Style from "../styles/alluser.module.css";
+import { UserCard, NavBar, Applicants } from "../Components/index";
+import Style from "../styles/pastExperiences.module.css";
 import { ChatAppContect } from "../Context/ChatAppContext";
 
-const alluser = () => {
+
+const pastExperiences = () => {
   //const { userLists, addFriends } = useContext(ChatAppContect);
   const { userLists } = useContext(ChatAppContect);
   return (
@@ -13,17 +14,17 @@ const alluser = () => {
       <div className={Style.alluser_info}>
         <h1>Verify Past Experiences </h1>
       </div>
-
-      <div className={Style.alluser}>
+<Applicants />
+      {/* <div className={Style.alluser}>
         {userLists[0].map((el, i) => {
           console.log(el);
           return <UserCard key={i + 1} el={el} i={i} />
           // <UserCard key={i + 1} el={el} i={i} addFriends={addFriends} />
           
           })}
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default alluser;
+export default pastExperiences;

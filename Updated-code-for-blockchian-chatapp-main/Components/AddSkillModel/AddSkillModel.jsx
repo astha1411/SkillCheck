@@ -2,12 +2,12 @@ import React, { useState, useContext } from "react";
 import Image from "next/image";
 
 //INTERNAL IMPORT
-import Style from "./AddExperienceModel.module.css";
+import Style from "./AddSkillModel.module.css";
 import images from "../../assets";
 import { ChatAppContect } from "../../Context/ChatAppContext";
 import { Loader } from "../index";
 
-const AddExperienceModel = ({
+const AddSkillModel = ({
   openBox,
   // title,
   address,
@@ -154,4 +154,4 @@ const AddExperienceModel = ({
   );
 };
 
-export default AddExperienceModel;
+export default AddSkillModel;

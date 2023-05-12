@@ -78,10 +78,9 @@ const Chat = ({
 </div>
 
             {yourJobs.map((el, i) => (
-              <div>
-                {
-                // ? (
-                  <div style={{ margin: '1em 0', padding: '1em 0' }}>
+                
+                  <div key={i}>
+                  <div style={{ margin: '1em 0', padding: '1em 0' }} >
                     {/* <div onClick={() => jobRedirect(el[0])} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}> */}
                     <Link href={{ pathname: '/jobPage', query: { jobID: el[0] } }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}>
@@ -94,28 +93,8 @@ const Chat = ({
                     </div>
                     </Link>
                   </div>
-                // ) : 
-                // (
-                  // <div className={Style.Chat_box_left_title}>
-                  //   <Image
-                  //     src={images.accountName}
-                  //     alt="image"
-                  //     width={50}
-                  //     height={50}
-                  //   />
-                  //   <span>
-                  //     {/* {userName} {""} */}
-                  //     {/* <small>Time: {converTime(el.timestamp)}</small> */}
-                  //   </span>
-                  // </div>
-                // )
-                }
-                {/* <p key={i + 1}>
-                  {el.msg}
-                  {""}
-                  {""}
-                </p> */}
-              </div>
+                  </div>
+                
             ))}
           </div>
         </div>

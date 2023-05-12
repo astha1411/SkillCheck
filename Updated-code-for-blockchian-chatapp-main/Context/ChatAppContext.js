@@ -36,6 +36,8 @@ export const ChatAppProvider = ({ children }) => {
   );
   const [userSkills, setUserSkills] = useState(["C++","Python"]);
   const [experiences, setExperiences] = useState([[0x37798412b19af53521dfc19ea63ca3b09c2a0e28850532f49fa754ed26cd8ee4,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0x5B38Da6a701c568545dCfcB03FcB875f56beddC4,"google",1,20,2,21,false],[0x2ba006edf58322e6250f2688e123c59e21d1d4b46df52e649280336faea478f3,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"amazon",4,21,5,22,false]]);
+  const [orgList, setOrgList] = useState([]);
+  const [pendingExperiences, setPendingExperiences] = useState([]);
 
   //CHAT USER DATA
   const [currentUserName, setCurrentUserName] = useState("");
@@ -260,16 +262,27 @@ export const ChatAppProvider = ({ children }) => {
     try {
       const contract = await connectingWithContract();
       const _experiences = await contract.getUserExperiences(address);
-      setExperiences(_experiences);
+      
+      const updatedExperiences = _experiences.map(exp => {
+        const updatedExp = [...exp];
+        updatedExp[4] = updatedExp[4].toString();
+        updatedExp[5] = updatedExp[5].toString();
+        updatedExp[6] = updatedExp[6].toString();
+        updatedExp[7] = updatedExp[7].toString();
+        return updatedExp;
+      });
+
+      setExperiences(updatedExperiences);
+      // console.log("getExp: "+updatedExperiences);
     } catch (error) {
       console.log("No Experience Yet");
     }
   }
 
   //ADD EXPERIENCE
-  const addExperience = async ({orgID, orgName, stMonth, stYear, endMonth , endYear}) =>{
-    console.log(orgID, orgName, stMonth, stYear, endMonth , endYear);
+  const addExperience2 = async ({orgID, orgName, stMonth, stYear, endMonth , endYear}) =>{
     try {
+      console.log(orgID, orgName, stMonth, stYear, endMonth , endYear);
       // if (!role || !location) return setError("Enter Details Please");
 
       const contract = await connectingWithContract();
@@ -279,7 +292,49 @@ export const ChatAppProvider = ({ children }) => {
       setLoading(false);
       window.location.reload();
     } catch (error) {
+      console.log(error);
       setError("Please reload and try again");
+    }
+  }
+
+  //GET ORG LIST
+  const getOrgList = async () => {
+    try {
+      const contract = await connectingWithContract();
+      const _orgList = await contract.getOrgList();
+      setOrgList(_orgList);
+    } catch (error) {
+      console.log("No Organisations Created Yet");
+    }
+  }
+
+  //ADD SKILL
+  const addSkill = async (skills) =>{
+    try {
+      console.log(skills);
+      // if (!role || !location) return setError("Enter Details Please");
+
+      const contract = await connectingWithContract();
+      const _skills = await contract.addSkills(skills);
+      setLoading(true);
+      await _skills.wait();
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      // console.log(error);
+      setError("Please reload and try again");
+    }
+  }
+
+  //GET PENDING EXPERIENCES
+  const getPendingExperiences = async (address) => {
+    try {
+      const contract = await connectingWithContract();
+      const _pendingExpList = await contract.getOrgPendingExperiences(address);
+      setPendingExperiences(_pendingExpList);
+      console.log(_pendingExpList);
+    } catch (error) {
+      console.log("No Organisations Created Yet");
     }
   }
 
@@ -302,7 +357,10 @@ export const ChatAppProvider = ({ children }) => {
         rejectApplicant,
         getSkills,
         getExperiences,
-        addExperience,
+        addExperience2,
+        getOrgList,
+        addSkill,
+        getPendingExperiences,
         account,
         userName,
         // friendLists,
@@ -318,7 +376,9 @@ export const ChatAppProvider = ({ children }) => {
         allJobs,
         jobDetails,
         userSkills,
-        experiences
+        experiences,
+        orgList,
+        pendingExperiences
       }}
     >
       {children}
