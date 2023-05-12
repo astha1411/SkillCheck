@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 //INTERNAL IMPORT
@@ -69,8 +70,9 @@ const JobApplicants = ({
 <div style={{ width: '100%' }}>
 {Object.values(applicants).filter(el => el[3] === "ongoing").map((el, index) => (
   <div key={index}>
+    <Link href={{ pathname: '/orgUserProfile', query: { userID: el[1] } }}>
      <div style={{ display: 'flex', alignItems: 'center',justifyContent: 'space-between' }}>
-      {console.log("aaa: "+el)}
+      {console.log("aaa: "+typeof(el[1]))}
       <p>{el[2]}</p>
       <p>{el[3]}</p>
       <div>
@@ -78,6 +80,7 @@ const JobApplicants = ({
       <button onClick={() =>rejectApplicant(el[4])}>Reject</button>
         </div>
     </div>
+    </Link>
   </div>
 ))}
 </div>

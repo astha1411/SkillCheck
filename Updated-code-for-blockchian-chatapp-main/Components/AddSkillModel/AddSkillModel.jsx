@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import Image from "next/image";
+import { useRouter, router } from 'next/router';
 
 //INTERNAL IMPORT
 import Style from "./AddSkillModel.module.css";
@@ -23,6 +24,7 @@ const AddSkillModel = ({
   const [stYear, setstYear] = useState(1);
   const [endMonth, setendMonth] = useState(2);
   const [endYear, setendYear] = useState(1);
+  const [skill, setSkill] = useState("");
   // const [skillRequired, setSkillRequired] = useState([]);
   // const [userAddress, setUserAddress] = useState(address);
   const { loading,  } = useContext(ChatAppContect);
@@ -36,8 +38,13 @@ const AddSkillModel = ({
     setOrgAddress(selectedOrg[2]);
     console.log(typeof(orgAddress));
   };
-  
-
+  const handleSelect = (event) => {
+    setSkill(event.target.value);
+  };
+  const handleButtonClick = () => {
+    const skillParam = skill === 'C++' ? 'CPP' : skill;
+    router.push(`/userTakeQuiz?skill=${skillParam}`);
+  };
 
   
   return (
@@ -60,74 +67,17 @@ const AddSkillModel = ({
             <div className={Style.Model_box_right_name}>
                <div className={Style.Model_box_right_name_info}>
       <Image src={images.username} alt="user" width={30} height={30} />
-      <select onChange={handleOrgChange}>
-        <option value="">Select an organization</option>
-        {orgList.map((org, index) => (
-          <option key={index} value={index}>
-            {org[0]}
-          </option>
-        ))}
-      </select>
-      <button onClick={() => {setOrg(""); setOrgAddress("")}}>Clear</button>
-      <p>{org}</p>
-      <p>{orgAddress}</p>
+      <select value={skill} onChange={handleSelect}>
+        
+          <option value="">Select the Skill</option>
+          <option value="C++">C++</option>
+          <option value="JS">JS</option>
+          <option value="Python">Python</option>
+          <option value="Kotlin">Kotlin</option>
+          <option value="Java">Java</option>
+        </select>
+      
     </div>
-              <div className={Style.Model_box_right_name_info}>
-                <Image
-                  src={images.username}
-                  alt="user"
-                  width={30}
-                  height={30}
-                />
-                <input
-                  type="number"
-                  placeholder="Start Month"
-                  onChange={(e) => setstMonth(e.target.value)}
-                />
-
-              </div>
-              <div className={Style.Model_box_right_name_info}>
-                <Image
-                  src={images.username}
-                  alt="user"
-                  width={30}
-                  height={30}
-                />
-                <input
-                  type="number"
-                  placeholder="Start Year"
-                  onChange={(e) => setstYear(e.target.value)}
-                />
-
-              </div>
-              <div className={Style.Model_box_right_name_info}>
-                <Image
-                  src={images.username}
-                  alt="user"
-                  width={30}
-                  height={30}
-                />
-                <input
-                  type="number"
-                  placeholder="End Month"
-                  onChange={(e) => setendMonth(e.target.value)}
-                />
-
-              </div>
-              <div className={Style.Model_box_right_name_info}>
-                <Image
-                  src={images.username}
-                  alt="user"
-                  width={30}
-                  height={30}
-                />
-                <input
-                  type="number"
-                  placeholder="End Year"
-                  onChange={(e) => setendYear(e.target.value)}
-                />
-
-              </div>              
               
 
               <div className={Style.Model_box_right_name_btn}>
@@ -135,8 +85,16 @@ const AddSkillModel = ({
                   {""}
                   <Image src={images.send} alt="send" width={30} height={30} />
                   {""}
-                  Add Experience
+                  Add Certificate
                 </button>
+
+                <button onClick={handleButtonClick}>
+                  {""}
+                  <Image src={images.send} alt="send" width={30} height={30} />
+                  {""}
+                  Take Test
+                </button>
+                
 
                 <button onClick={() => openBox(false)}>
                   {""}

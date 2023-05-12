@@ -279,6 +279,7 @@ export const ChatAppProvider = ({ children }) => {
   //GET USER EXPERIENCES
   const getExperiences = async (address) => {
     try {
+      console.log("getExp: "+address);
       const contract = await connectingWithContract();
       const _experiences = await contract.getUserExperiences(address);
       
@@ -294,6 +295,7 @@ export const ChatAppProvider = ({ children }) => {
       setExperiences(updatedExperiences);
       // console.log("getExp: "+updatedExperiences);
     } catch (error) {
+      console.log(error);
       console.log("No Experience Yet");
     }
   }
