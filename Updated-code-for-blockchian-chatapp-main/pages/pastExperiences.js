@@ -7,14 +7,14 @@ import { ChatAppContect } from "../Context/ChatAppContext";
 
 const pastExperiences = () => {
   //const { userLists, addFriends } = useContext(ChatAppContect);
-  const { userLists } = useContext(ChatAppContect);
+  const { userLists, account } = useContext(ChatAppContect);
   return (
     <div>
       <NavBar />
       <div className={Style.alluser_info}>
         <h1>Verify Past Experiences </h1>
       </div>
-<Applicants />
+<Applicants account={account}/>
       {/* <div className={Style.alluser}>
         {userLists[0].map((el, i) => {
           console.log(el);

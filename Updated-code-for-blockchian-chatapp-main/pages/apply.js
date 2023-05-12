@@ -2,7 +2,7 @@ import React from 'react'
 
 import { JobPage, NavBar } from "../Components/index";
 
-const basic = () => {
+const apply = () => {
   return (
     <div>
       <NavBar />
@@ -11,4 +11,4 @@ const basic = () => {
   )
 }
 
-export default basic
+export default apply

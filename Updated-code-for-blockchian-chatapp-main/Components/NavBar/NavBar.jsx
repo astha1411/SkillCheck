@@ -24,7 +24,7 @@ const NavBar = () => {
     },
     {
       menu: "QUIZ",
-      link: "/",
+      link: "OrgQuiz",
     },
   ];
 

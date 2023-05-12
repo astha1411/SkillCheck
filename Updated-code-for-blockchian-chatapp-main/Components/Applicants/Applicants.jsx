@@ -17,11 +17,12 @@ const Applicants = ({
   yourJobs,
   getApplicants,
   jobID,
+  account
 }) => {
   //USE STATE
   const [message, setMessage] = useState("");
   const [targetPage, setTargetPage] = useState('/');
-  const { applicants } = useContext(ChatAppContect);
+  const { getPendingExperiences, pendingExperiences, readAnyUser, anyUser, rejectExperience, selectExperience } = useContext(ChatAppContect);
 
   const router = useRouter();
 
@@ -32,34 +33,21 @@ const Applicants = ({
 
   // }, [router.isReady]);
 
-  const [_applicants, _setApplicants] = useState([]);
+  // const [_applicants, _setApplicants] = useState([]);
 
   useEffect(() => {
-    function rearrangeApplicants(applicants) {
-      const numApplicants = Object.values(applicants)[0].length;
-      const rearranged = [];
-      for (let i = 0; i < numApplicants; i++) {
-        rearranged.push([
-          Object.values(applicants)[0][i],
-          Object.values(applicants)[1][i],
-          Object.values(applicants)[2][i],
-          Object.values(applicants)[3][i],
-          Object.values(applicants)[4][i],
-        ]);
-      }
-      return rearranged;
+    if (account) {
+      console.log("account: " + account);
+      getPendingExperiences(account);
+      console.log("pending: " + pendingExperiences);
     }
-
-    _setApplicants(rearrangeApplicants(applicants));
-  }, [applicants]);
-
-  console.log("applicants: ", applicants);
-
-  async function jobRedirect(param) {
-    // Do something when the button is clicked
-    console.log(param);
-  }
-
+  }, [account]);
+  
+  // console.log("applicants2: ", applicants);
+  function getName(account) {
+      // readAnyUser(account);
+    }
+  
   // console.log(chatData.address, chatData.name);
   return (
     <div className={Style.Chat}>
@@ -85,14 +73,16 @@ const Applicants = ({
   
 </div>
 <div style={{ width: '100%' }}>
-{Object.values(_applicants).map((el, index) => (
+{Object.values(pendingExperiences).map((el, index) => (
   <div key={index}>
      <div style={{ display: 'flex', alignItems: 'center',justifyContent: 'space-between' }}>
-      <p>{el[2]}</p>
-      <p>{el[3]}</p>
+      {getName()}
+      {console.log("aaa: "+anyUser)}
+      <p>{el[1]}</p>
+      <p>{el[9]?"true":"false"}</p>
       <div>
-      <button>Accept</button>
-      <button>Reject</button>
+      <button onClick={() =>selectExperience(el[0])}>Accept</button>
+      <button onClick={() =>rejectExperience(el[0])}>Reject</button>
         </div>
     </div>
   </div>
@@ -102,7 +92,7 @@ const Applicants = ({
             
           </div>
         </div>
-        {console.log("applicants list: " + JSON.stringify(applicants))}
+        {/* {console.log("applicants list: " + JSON.stringify(applicants))} */}
         
 
      

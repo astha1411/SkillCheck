@@ -12,7 +12,7 @@ const UserNavBar = () => {
   const menuItems = [
     {
       menu: "JOBS",
-      link: "basic",
+      link: "apply",
     },
     {
       menu: "HOME",

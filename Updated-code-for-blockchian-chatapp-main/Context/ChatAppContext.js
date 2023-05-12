@@ -38,11 +38,12 @@ export const ChatAppProvider = ({ children }) => {
   const [experiences, setExperiences] = useState([[0x37798412b19af53521dfc19ea63ca3b09c2a0e28850532f49fa754ed26cd8ee4,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0x5B38Da6a701c568545dCfcB03FcB875f56beddC4,"google",1,20,2,21,false],[0x2ba006edf58322e6250f2688e123c59e21d1d4b46df52e649280336faea478f3,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"amazon",4,21,5,22,false]]);
   const [orgList, setOrgList] = useState([]);
   const [pendingExperiences, setPendingExperiences] = useState([]);
-
+  const [anyUser, setAnyUser] = useState("");
   //CHAT USER DATA
   const [currentUserName, setCurrentUserName] = useState("");
   const [currentUserAddress, setCurrentUserAddress] = useState("");
-
+  const [skillQuestion, setskillQuestion] = useState([[0xa0ff94b0fbe78a79eda563026411f7a2b720fe3dc1ac34eb61283f3648bcd707,0xfd4dff033d528f6f7fe2d809c3bd173e484cfdf843d8830721cf8b325585ca74,"C++","ajwdlfnm","cat","dog","cow","horse",1],[0x3cfb0d0f199b99f4f4c4687ac81736ed4f785838861e161e521ab584b6e61592,0x4ea15e403cd349f9db2f7ef9f1919f2a3d9673915a77591bc95627e6f2885a1a,'Python','afafgDFD','red','blue',"yellow","green",2]]);
+  const [skillQuiz, setSkillQuiz] = useState([["ajwdlfnm","cat","dog","cow","horse",1],['afafgDFD','red','blue',"yellow","green",2]]);
   const router = useRouter();
 
   //FETCH DATA TIME OF PAGE LOAD
@@ -149,6 +150,13 @@ export const ChatAppProvider = ({ children }) => {
     const userName = await contract.getUsername2(userAddress);
     setCurrentUserName(userName);
     setCurrentUserAddress(userAddress);
+  };
+  //READ ANY USER (GETUSERNAME2)
+  const readAnyUser = async (address) => {
+    const contract = await connectingWithContract();
+    const userName = await contract.getUsername2(address);
+    setAnyUser(userName);
+    // setCurrentUserAddress(userAddress);
   };
 
   //GET YOUR JOBS
@@ -327,16 +335,116 @@ export const ChatAppProvider = ({ children }) => {
   }
 
   //GET PENDING EXPERIENCES
-  const getPendingExperiences = async (address) => {
+  const getPendingExperiences = async () => {
     try {
       const contract = await connectingWithContract();
-      const _pendingExpList = await contract.getOrgPendingExperiences(address);
+      const _pendingExpList = await contract.getOrgPendingExperiences();
       setPendingExperiences(_pendingExpList);
-      console.log(_pendingExpList);
     } catch (error) {
       console.log("No Organisations Created Yet");
     }
   }
+
+  //REJECT EXPERIENCE
+  const rejectExperience = async (expID) => {
+    try {
+      const contract = await connectingWithContract();
+      const rejecting = await contract.rejectExp(expID);
+      setLoading(true);
+      await rejecting.wait();
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      setError("Please reload and try again");
+    }
+  };
+  //SELECT EXPERIENCE
+  const selectExperience = async (expID) => {
+    try {
+      const contract = await connectingWithContract();
+      const selecting = await contract.verifyExp(expID);
+      setLoading(true);
+      await selecting.wait();
+      console.log("selected");
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      setError("Please reload and try again");
+    }
+  };
+//ADD QUESTIONS
+const addQuestions = async ({questionLine, option1, option2, option3, option4, answer, skill}) =>{
+  try {
+    console.log("addQuestion: "+questionLine, option1, option2, option3, option4, answer, skill);
+    // if (!role || !location) return setError("Enter Details Please");
+
+    const contract = await connectingWithContract();
+    const _ques = await contract.addQuestion(questionLine, option1, option2, option3, option4, answer, skill);
+    setLoading(true);
+    await _ques.wait();
+    setLoading(false);
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+    setError("Please reload and try again");
+  }
+}
+//GET QUESTIONs
+const getQuestions2 = async () =>{
+  try {
+    // if (!role || !location) return setError("Enter Details Please");
+
+    const contract = await connectingWithContract();
+    const _skillQuestion = await contract.viewPendingApprovals();
+    setskillQuestion(_skillQuestion);
+  } catch (error) {
+    console.log(error);
+    setError("Please reload and try again");
+  }
+}
+//ACCEPT QUESTION
+const acceptQuestion = async (proposedQuestionID) => {
+  try {
+    const contract = await connectingWithContract();
+    const accepting = await contract.acceptProposedQuestion(proposedQuestionID);
+    setLoading(true);
+    await accepting.wait();
+    console.log("accepting");
+    setLoading(false);
+    window.location.reload();
+  } catch (error) {
+    setError("Please reload and try again");
+  }
+};
+//REJECT QUESTION
+const rejectQuestion = async (proposedQuestionID) => {
+  try {
+    const contract = await connectingWithContract();
+    const rejecting = await contract.rejectProposedQuestion(proposedQuestionID);
+    setLoading(true);
+    await rejecting.wait();
+    setLoading(false);
+    console.log(proposedQuestionID);
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+    setError("Please reload and try again");
+  }
+};
+
+//VIEW QUIZ BY SKILL
+const getQuestionBySkill = async (skill) => {
+  try {
+    // console.log("quizSkill: "+skill);
+    const contract = await connectingWithContract();
+    const _skillQuiz = await contract.getQuestions(skill);
+    setSkillQuiz(_skillQuiz);
+    console.log("skillQuiz: "+_skillQuiz);
+  } catch (error) {
+    console.log(error);
+    console.log("No Questions for Given Quiz Yet");
+  }
+}
 
   return (
     <ChatAppContect.Provider
@@ -361,6 +469,14 @@ export const ChatAppProvider = ({ children }) => {
         getOrgList,
         addSkill,
         getPendingExperiences,
+        readAnyUser,
+        rejectExperience,
+        selectExperience,
+        addQuestions,
+        getQuestions2,
+        acceptQuestion,
+        rejectQuestion,
+        getQuestionBySkill,
         account,
         userName,
         // friendLists,
@@ -378,7 +494,10 @@ export const ChatAppProvider = ({ children }) => {
         userSkills,
         experiences,
         orgList,
-        pendingExperiences
+        pendingExperiences,
+        anyUser,
+        skillQuestion,
+        skillQuiz
       }}
     >
       {children}
