@@ -12,7 +12,7 @@ const ChatApp = () => {
       
       await ChechIfWalletConnected();
       console.log("roleIndex: "+role);
-      const targetPage = role ? '/orgHome' : '/orgHome';
+      const targetPage = role ? '/orgHome' : '/userHome';
       router.push(targetPage);
     }
     fetchData();

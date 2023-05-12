@@ -25,14 +25,17 @@ export const ChatAppProvider = ({ children }) => {
   const [yourJobs, setYourJobs] = useState([[[0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde1","Bombay","12,00,000INR","1 Total","1 Left",false,"C++"],[0x8c84ea25bf347081ae18db0d8789a8f3a12fc598631e4ed824ef6a117bbb94d0,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde2","Delhi","15,00,000INR","2 Total","2 Left",false,"JS"]]]);
   const [allJobs, setAllJobs] = useState([]);
   const [jobDetails, setJobDetails] = useState([]);
-  const [applicants, setApplicants] = useState({
+  const [applicants, setApplicants] = useState(
+    {
     jobIDs: [0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c],
     userIDs: [0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0x617F2E2fD72FD9D5503197092aC168c91465E7f2,0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db],
     names: ["Krutin","Apurv","Akshad","Krutin"],
     statuses: ["ongoing","ongoing","ongoing","ongoing"],
     applicationIDs: [0xc25548d6895002141bfdf14576245b332750d4f934e552c3525e8c8938047f3b,0x9390c98c523b0ed9d84414014c97a62f03b2866535a70a9c1383bec86ee94eb3,0x9e6077cd4a21cfd917c1ba980c0ef818821b1fa159c4c329d8e319d2e61b4445,0xc25548d6895002141bfdf14576245b332750d4f934e552c3525e8c8938047f3b],
-  });
-  
+  }
+  );
+  const [userSkills, setUserSkills] = useState(["C++","Python"]);
+  const [experiences, setExperiences] = useState([[0x37798412b19af53521dfc19ea63ca3b09c2a0e28850532f49fa754ed26cd8ee4,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0x5B38Da6a701c568545dCfcB03FcB875f56beddC4,"google",1,20,2,21,false],[0x2ba006edf58322e6250f2688e123c59e21d1d4b46df52e649280336faea478f3,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"amazon",4,21,5,22,false]]);
 
   //CHAT USER DATA
   const [currentUserName, setCurrentUserName] = useState("");
@@ -213,6 +216,73 @@ export const ChatAppProvider = ({ children }) => {
     }
   }
 
+  //SELECT APPLICANTS
+  const selectApplicant = async (applicationID) => {
+    try {
+      const contract = await connectingWithContract();
+      const selecting = await contract.selectApplicant(applicationID);
+      setLoading(true);
+      await selecting.wait();
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      setError("Please reload and try again");
+    }
+  };
+
+  //REJECT APPLICANTS
+  const rejectApplicant = async (applicationID) => {
+    try {
+      const contract = await connectingWithContract();
+      const rejecting = await contract.selectApplicant(applicationID);
+      setLoading(true);
+      await rejecting.wait();
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      setError("Please reload and try again");
+    }
+  };
+
+  //GET USER SKILLS
+  const getSkills = async (address) => {
+    try {
+      const contract = await connectingWithContract();
+      const _skills = await contract.getUserSkillList(address);
+      setUserSkills(_skills);
+    } catch (error) {
+      console.log("No Skills Yet");
+    }
+  }
+
+  //GET USER EXPERIENCES
+  const getExperiences = async (address) => {
+    try {
+      const contract = await connectingWithContract();
+      const _experiences = await contract.getUserExperiences(address);
+      setExperiences(_experiences);
+    } catch (error) {
+      console.log("No Experience Yet");
+    }
+  }
+
+  //ADD EXPERIENCE
+  const addExperience = async ({orgID, orgName, stMonth, stYear, endMonth , endYear}) =>{
+    console.log(orgID, orgName, stMonth, stYear, endMonth , endYear);
+    try {
+      // if (!role || !location) return setError("Enter Details Please");
+
+      const contract = await connectingWithContract();
+      const _exp = await contract.addExperience(orgID, orgName, stMonth, stYear, endMonth , endYear);
+      setLoading(true);
+      await _exp.wait();
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      setError("Please reload and try again");
+    }
+  }
+
   return (
     <ChatAppContect.Provider
       value={{
@@ -228,6 +298,11 @@ export const ChatAppProvider = ({ children }) => {
         getAllJobs,
         getJobByID,
         getApplicants,
+        selectApplicant,
+        rejectApplicant,
+        getSkills,
+        getExperiences,
+        addExperience,
         account,
         userName,
         // friendLists,
@@ -241,7 +316,9 @@ export const ChatAppProvider = ({ children }) => {
         yourJobs,
         applicants,
         allJobs,
-        jobDetails
+        jobDetails,
+        userSkills,
+        experiences
       }}
     >
       {children}

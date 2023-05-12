@@ -10,5 +10,9 @@ import JobPage from "./JobPage/JobPage";
 import UserNavBar from "./UserNavBar/UserNavBar";
 import JobDetails from "./JobDetails/JobDetails";
 import Applicants from "./Applicants/Applicants"
+import Skills from "./Skills/Skills";
+import Experience from "./Experience/Experience";
+import UserProfileAdd from "./UserProfileAdd/UserProfileAdd";
+import AddExperienceModel from "./AddExperienceModel/AddExperienceModel";
 
-export { NavBar, Filter, Error, Loader, Model, Model2, UserCard, Friend, JobPage, UserNavBar, JobDetails, Applicants };
+export { NavBar, Filter, Error, Loader, Model, Model2, UserCard, Friend, JobPage, UserNavBar, JobDetails, Applicants, Skills, Experience, UserProfileAdd, AddExperienceModel };

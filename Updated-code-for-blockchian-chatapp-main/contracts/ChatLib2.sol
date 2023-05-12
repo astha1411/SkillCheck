@@ -4,6 +4,72 @@ pragma solidity ^0.8.0;
 import "./IChatApp.sol";
 
 library ChatLib2 {
+    //CREATE ACCOUNT
+    function _createAccount(mapping(address => IChatApp.account) storage accountList, 
+    IChatApp.account[] storage orgList,
+    string memory name,
+    bool role) external {
+    IChatApp.account memory newAccount = IChatApp.account(name, role, msg.sender);
+    accountList[msg.sender] = newAccount;
+    if(role) {
+    orgList.push(newAccount);
+    }
+}
+
+//GET JOB ID
+    function _getJobID(
+        address orgID,
+        string memory role,
+        string memory location,
+        string memory package,
+        uint8 openingsTotal
+    ) internal pure returns (bytes32) {
+        return
+            keccak256(
+                abi.encodePacked(orgID, role, location, package, openingsTotal)
+            );
+    }
+
+
+//ADD JOB
+    function _addJob(
+    mapping(bytes32 => IChatApp.job) storage jobMap,
+    mapping(address => bytes32[]) storage orgJobPostings,
+    mapping(address => IChatApp.account) storage accountList,
+    // bytes32[] storage allJobIDs ,
+    string calldata role,
+    string calldata location,
+    string calldata package,
+    uint8 openingsTotal,
+    string[] memory skillsRequired
+) external returns (bytes32 _jobID){
+    //require that account is organisation type
+    bytes32 jobID = _getJobID(
+        msg.sender,
+        role,
+        location,
+        package,
+        openingsTotal
+    );
+    jobMap[jobID].jobID = jobID;
+    jobMap[jobID].orgID = msg.sender;
+    jobMap[jobID].orgName = accountList[msg.sender].name;
+    jobMap[jobID].role = role;
+    jobMap[jobID].location = location;
+    jobMap[jobID].package = package;
+    jobMap[jobID].openingsTotal = openingsTotal;
+    jobMap[jobID].openingsLeft = openingsTotal; //when the job is created, all openings will be remaining
+    jobMap[jobID].jobStatus = false;
+    jobMap[jobID].skillsRequired = skillsRequired;
+    // _addJobHelper(allJobIDs, jobID);
+    orgJobPostings[msg.sender].push(jobID);
+    return jobID;
+}
+    function getOrgList(
+    IChatApp.account[] storage orgList
+    ) public view returns (IChatApp.account[] storage) {
+        return orgList;
+    }
 
     function _viewPendingApprovals(
     mapping(bytes32 => IChatApp.question) storage questionMap,

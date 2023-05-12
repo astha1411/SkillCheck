@@ -10,7 +10,7 @@ contract ChatAppV2 is IChatApp {
     // function accountList(address _address) external view returns (account memory) {
     //     return _accountList[_address];
     // }
-    account[] orgList;
+    account[] _orgList;
     
     mapping(address => string[]) private _userSkillList;
     // function userSkillList(address _address) external view returns (string[] memory) {
@@ -44,7 +44,7 @@ contract ChatAppV2 is IChatApp {
     }
     //CREATE ACCOUNT2
     function createAccount2(string memory name, bool role) external {
-       ChatLib._createAccount(_accountList, name, role);
+       ChatLib2._createAccount(_accountList,_orgList, name, role);
     }
     //GET ROLE2
     function getRole2(address _address) public view returns (bool) {
@@ -56,6 +56,10 @@ contract ChatAppV2 is IChatApp {
         //frontend will send all skills in alphabetical order whenever a single skill is to be added
         require(getRole2(msg.sender) == false, "Account is not User type");
         ChatLib._addSkills(_userSkillList, skills);
+    }
+    //GET ORG LIST
+    function getOrgList() external view returns (account[] memory){
+        return _orgList;
     }
     //GET SKILLS
     function getUserSkillList(
@@ -112,7 +116,7 @@ contract ChatAppV2 is IChatApp {
     uint8 openingsTotal,
     string[] memory skillsRequired
     ) external {
-        bytes32 jobID = ChatLib._addJob(_jobMap, _orgJobPostings, _accountList, role, location, package, openingsTotal, skillsRequired);
+        bytes32 jobID = ChatLib2._addJob(_jobMap, _orgJobPostings, _accountList, role, location, package, openingsTotal, skillsRequired);
         allJobIDs.push(jobID);
     }
 
@@ -303,9 +307,7 @@ contract ChatAppV2 is IChatApp {
         return userList[pubkey].role;
     }
 
-    //ADD FRIENDS
-    function addFriend(address friend_key, string calldata name) external {
-    }
+    
 
     //checkAlreadyFriends
     function checkAlreadyFriends(
@@ -328,9 +330,7 @@ contract ChatAppV2 is IChatApp {
 
     
 
-    function getAllAppUser() public view returns (AllUserStruck[] memory) {
-        return getAllUsers;
-    }
+    
 
 
 }

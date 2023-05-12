@@ -7,10 +7,7 @@ library ChatLib {
     function _getUsername(mapping(address => IChatApp.account) storage accountList, address pubkey) external view returns (string memory) {
         return accountList[pubkey].name;
 }
-    function _createAccount(mapping(address => IChatApp.account) storage accountList, string memory name, bool role) external {
-    IChatApp.account memory newAccount = IChatApp.account(name, role, msg.sender);
-    accountList[msg.sender] = newAccount;
-}
+    
     //CHECKACCOUNTEXISTS IMPLEMENTED IN CHATAPPV2
     // function _checkAccountExists(mapping(address => IChatApp.account) storage accountList, address pubkey) public view returns (bool) {
     //     return bytes(accountList[pubkey].name).length > 0;
@@ -177,53 +174,9 @@ library ChatLib {
         }
     }
 
-    //GET JOB ID
-    function _getJobID(
-        address orgID,
-        string memory role,
-        string memory location,
-        string memory package,
-        uint8 openingsTotal
-    ) internal pure returns (bytes32) {
-        return
-            keccak256(
-                abi.encodePacked(orgID, role, location, package, openingsTotal)
-            );
-    }
+    
 
-    //ADD JOB
-    function _addJob(
-    mapping(bytes32 => IChatApp.job) storage jobMap,
-    mapping(address => bytes32[]) storage orgJobPostings,
-    mapping(address => IChatApp.account) storage accountList,
-    string calldata role,
-    string calldata location,
-    string calldata package,
-    uint8 openingsTotal,
-    string[] memory skillsRequired
-) external returns (bytes32 _jobID){
-    //require that account is organisation type
-    bytes32 jobID = _getJobID(
-        msg.sender,
-        role,
-        location,
-        package,
-        openingsTotal
-    );
-    jobMap[jobID].jobID = jobID;
-    jobMap[jobID].orgID = msg.sender;
-    jobMap[jobID].orgName = accountList[msg.sender].name;
-    jobMap[jobID].role = role;
-    jobMap[jobID].location = location;
-    jobMap[jobID].package = package;
-    jobMap[jobID].openingsTotal = openingsTotal;
-    jobMap[jobID].openingsLeft = openingsTotal; //when the job is created, all openings will be remaining
-    jobMap[jobID].jobStatus = false;
-    jobMap[jobID].skillsRequired = skillsRequired;
-    // allJobIDs.push(jobID);
-    orgJobPostings[msg.sender].push(jobID);
-    return jobID;
-}
+    
 
     //GET ALL JOBS
     function _getAllJobs(

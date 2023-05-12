@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -7,6 +7,7 @@ import Style from "./Applicants.module.css";
 import images from "../../assets";
 // import { converTime } from "../../../Utils/apiFeature";
 import { Loader } from "../index";
+import { ChatAppContect } from "../../Context/ChatAppContext";
 
 const Applicants = ({
   functionName,
@@ -14,15 +15,13 @@ const Applicants = ({
   currentUserName,
   currentUserAddress,
   yourJobs,
-  jobID,
   getApplicants,
-  applicants,
-  error
+  jobID,
 }) => {
   //USE STATE
   const [message, setMessage] = useState("");
   const [targetPage, setTargetPage] = useState('/');
-  
+  const { applicants } = useContext(ChatAppContect);
 
   const router = useRouter();
 
@@ -33,15 +32,28 @@ const Applicants = ({
 
   // }, [router.isReady]);
 
-  useEffect(() => {
-    // if (chatData.address) {
-    //   readMessage(chatData.address);
-    //   readUser(chatData.address);
-    // }
+  const [_applicants, _setApplicants] = useState([]);
 
-    // getApplicants(jobID);
-    console.log("applicants: "+jobID)
-  }, []);
+  useEffect(() => {
+    function rearrangeApplicants(applicants) {
+      const numApplicants = Object.values(applicants)[0].length;
+      const rearranged = [];
+      for (let i = 0; i < numApplicants; i++) {
+        rearranged.push([
+          Object.values(applicants)[0][i],
+          Object.values(applicants)[1][i],
+          Object.values(applicants)[2][i],
+          Object.values(applicants)[3][i],
+          Object.values(applicants)[4][i],
+        ]);
+      }
+      return rearranged;
+    }
+
+    _setApplicants(rearrangeApplicants(applicants));
+  }, [applicants]);
+
+  console.log("applicants: ", applicants);
 
   async function jobRedirect(param) {
     // Do something when the button is clicked
@@ -67,17 +79,33 @@ const Applicants = ({
         <div className={Style.Chat_box}>
           <div className={Style.Chat_box_left}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-  <span>Role</span>
-  <span>Pay</span>
-  <span>Location</span>
-  <span>Openings</span>
-  <span>Vacancies</span>
+  <span>Name</span>
+  <span>Status</span>
+  <span>Decide</span>
+  
+</div>
+<div style={{ width: '100%' }}>
+{Object.values(_applicants).map((el, index) => (
+  <div key={index}>
+     <div style={{ display: 'flex', alignItems: 'center',justifyContent: 'space-between' }}>
+      <p>{el[2]}</p>
+      <p>{el[3]}</p>
+      <div>
+      <button>Accept</button>
+      <button>Reject</button>
+        </div>
+    </div>
+  </div>
+))}
 </div>
 
             
           </div>
         </div>
-        {console.log("applicants list: "+error)}
+        {console.log("applicants list: " + JSON.stringify(applicants))}
+        
+
+     
         {currentUserName && currentUserAddress ? (
           <div className={Style.Chat_box_send}>
             <div className={Style.Chat_box_send_img}>
@@ -113,7 +141,7 @@ const Applicants = ({
 
 
 export default Applicants;
-// {applicants.map((el, i) => (
+// {JSON.parse(JSON.stringify(applicants)).map((el, i) => (
 //   <div>
 //     {
 //     // ? (

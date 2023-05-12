@@ -23,7 +23,7 @@ const Model = ({
   const [userAddress, setUserAddress] = useState(address);
 
   const onOptionChange = e => {
-    setRole(e.target.value === '0');
+    setRole(e.target.value === "1");
     
   }
 
