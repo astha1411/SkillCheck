@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useRouter } from 'next/router';
 //INTERNAL IMPORT
 import { ChatAppContect } from "../Context/ChatAppContext";
-import { Applicants, JobDetails, NavBar } from "../Components/index";
+import { JobApplicants, JobDetails, NavBar } from "../Components/index";
 
 const JobPage = () => {
     const router = useRouter();
@@ -15,7 +15,7 @@ const JobPage = () => {
         {console.log(jobID)}
         <NavBar />
         <JobDetails jobID={jobID}/>
-        <Applicants jobID={jobID}/>
+        <JobApplicants jobID={jobID}/>
     </div>
   )
 }

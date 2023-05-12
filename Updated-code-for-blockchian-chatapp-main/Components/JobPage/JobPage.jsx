@@ -12,25 +12,19 @@ import { ChatAppContect } from "../../Context/ChatAppContext";
 const JobPage = ({
   functionName,
 //   readMessage,
-  friendMsg,
-  account,
-  userName,
+  
   loading,
   currentUserName,
   currentUserAddress,
-  readUser,
-  yourJobs,
-  jobID
+  
 }) => {
-    const { applicants } = useContext(ChatAppContect);
+    const { getAllJobs, allJobs, applyToJob } = useContext(ChatAppContect);
   //USE STATE
   const [message, setMessage] = useState("");
-  const [targetPage, setTargetPage] = useState('/');
-  const [job, setJob] = useState([0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde1","Bombay","12,00,000INR","1 Total","1 Left",false,"C++"]);
+  // const [targetPage, setTargetPage] = useState('/');
+  // const [job, setJob] = useState([0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde1","Bombay","12,00,000INR","1 Total","1 Left",false,"C++"]);
 //   const [applicants, getApplicants] = useState([]);
   const router = useRouter();
-  console.log(applicants);
-  const applicantsArray = Object.values(applicants);
 
   // useEffect(() => {
   //   if (!router.isReady) return;
@@ -44,6 +38,8 @@ const JobPage = ({
     //   readMessage(chatData.address);
     //   readUser(chatData.address);
     // }
+    getAllJobs();
+    console.log("useEffect AllJob: "+allJobs);
   }, []);
 
   async function jobRedirect(param) {
@@ -73,21 +69,37 @@ const JobPage = ({
 <div style={{ display: 'flex', flexDirection: 'column' }}>
   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
     <span>Name</span>
+    <span>Role</span>
+    <span>Location</span>
+    <span>Compensation</span>
+    <span>Vacancies</span>
     <span>Skills</span>
     <span>Action</span>
   </div>
   {/* {console.log(typeof applicants)} */}
-  {applicantsArray.map((applicant) => (
-      <div key={applicant[0]}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span>{applicant[2]}</span>
-          <span>C++</span>
-          <span>{applicant[3]}</span>
-        </div>
-      </div>
-    ))}
+  
 </div>
-          
+{allJobs.map((el, i) => (
+                
+                <div key={i}>
+                <div style={{ margin: '1em 0', padding: '1em 0' }} >
+                  {/* <div onClick={() => jobRedirect(el[0])} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}> */}
+                  {/* <Link href={{ pathname: '/jobPage', query: { jobID: el[0] } }}> */}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}>
+                    <small>{(el[2])}</small>
+                    <small>{(el[3])}</small>
+                    <small>{(el[4])}</small>
+                    <small>{(el[5])}</small>
+                    <small>{(el[7])}</small>
+                    <small>{(el[9])}</small>
+                    <button onClick={() => applyToJob(el[0])}>Apply</button>
+                  </div>
+                  {/* </Link> */}
+                </div>
+                </div>
+              
+          ))}
+          {console.log("allJobs: "+allJobs)}
           </div>
         </div>
 
@@ -122,41 +134,16 @@ const JobPage = ({
       </div>
     </div>
   );
-//   {yourJobs[0].map((el, i) => (
-//     <div>
-//       {
-//       // ? (
-//         <div style={{ margin: '1em 0', padding: '1em 0' }}>
-//           <div onClick={() => jobRedirect(el[0])} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}>
-            
-//             <small>{(el[3])}</small>
-//             <small>{(el[5])}</small>
-//             <small>{(el[4])}</small>
-//           </div>
-//         </div>
-//       // ) : 
-//       // (
-//         // <div className={Style.Chat_box_left_title}>
-//         //   <Image
-//         //     src={images.accountName}
-//         //     alt="image"
-//         //     width={50}
-//         //     height={50}
-//         //   />
-//         //   <span>
-//         //     {/* {userName} {""} */}
-//         //     {/* <small>Time: {converTime(el.timestamp)}</small> */}
-//         //   </span>
-//         // </div>
-//       // )
-//       }
-//       {/* <p key={i + 1}>
-//         {el.msg}
-//         {""}
-//         {""}
-//       </p> */}
-//     </div>
-//   ))}
+
 };
 
 export default JobPage;
+// {applicantsArray.map((applicant) => (
+//       <div key={applicant[0]}>
+//         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+//           <span>{applicant[2]}</span>
+//           <span>C++</span>
+//           <span>{applicant[3]}</span>
+//         </div>
+//       </div>
+//     ))}

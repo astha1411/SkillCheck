@@ -25,15 +25,16 @@ export const ChatAppProvider = ({ children }) => {
   const [yourJobs, setYourJobs] = useState([[[0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde1","Bombay","12,00,000INR","1 Total","1 Left",false,"C++"],[0x8c84ea25bf347081ae18db0d8789a8f3a12fc598631e4ed824ef6a117bbb94d0,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"google","sde2","Delhi","15,00,000INR","2 Total","2 Left",false,"JS"]]]);
   const [allJobs, setAllJobs] = useState([]);
   const [jobDetails, setJobDetails] = useState([]);
-  const [applicants, setApplicants] = useState(
-    {
-    jobIDs: [0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c],
-    userIDs: [0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0x617F2E2fD72FD9D5503197092aC168c91465E7f2,0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db],
-    names: ["Krutin","Apurv","Akshad","Krutin"],
-    statuses: ["ongoing","ongoing","ongoing","ongoing"],
-    applicationIDs: [0xc25548d6895002141bfdf14576245b332750d4f934e552c3525e8c8938047f3b,0x9390c98c523b0ed9d84414014c97a62f03b2866535a70a9c1383bec86ee94eb3,0x9e6077cd4a21cfd917c1ba980c0ef818821b1fa159c4c329d8e319d2e61b4445,0xc25548d6895002141bfdf14576245b332750d4f934e552c3525e8c8938047f3b],
-  }
-  );
+  // const [applicants, setApplicants] = useState(
+  //   {
+  //   jobIDs: [0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c,0x1f1441caca5066fc0ce926f5cdf4503597911ce84225aac3411c66d9b82d427c],
+  //   userIDs: [0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0x617F2E2fD72FD9D5503197092aC168c91465E7f2,0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db],
+  //   names: ["Krutin","Apurv","Akshad","Krutin"],
+  //   statuses: ["ongoing","ongoing","ongoing","ongoing"],
+  //   applicationIDs: [0xc25548d6895002141bfdf14576245b332750d4f934e552c3525e8c8938047f3b,0x9390c98c523b0ed9d84414014c97a62f03b2866535a70a9c1383bec86ee94eb3,0x9e6077cd4a21cfd917c1ba980c0ef818821b1fa159c4c329d8e319d2e61b4445,0xc25548d6895002141bfdf14576245b332750d4f934e552c3525e8c8938047f3b],
+  // }
+  // );
+  const [applicants, setApplicants] = useState([]);
   const [userSkills, setUserSkills] = useState(["C++","Python"]);
   const [experiences, setExperiences] = useState([[0x37798412b19af53521dfc19ea63ca3b09c2a0e28850532f49fa754ed26cd8ee4,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0x5B38Da6a701c568545dCfcB03FcB875f56beddC4,"google",1,20,2,21,false],[0x2ba006edf58322e6250f2688e123c59e21d1d4b46df52e649280336faea478f3,0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db,0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2,"amazon",4,21,5,22,false]]);
   const [orgList, setOrgList] = useState([]);
@@ -192,9 +193,13 @@ export const ChatAppProvider = ({ children }) => {
     try {
       const contract = await connectingWithContract();
       const _allJobIDs = await contract.getAllJobIDs();
-      const _allJobs = await contract.getAllJobs(_allJobIDs);
+      // const _allJobs = await contract.getAllJobs(_allJobIDs);
+      
+      const _allJobs = await contract.getAllJobsByIDs(_allJobIDs);
+      console.log("_allJobs: "+_allJobs);
       setAllJobs(_allJobs);
     } catch (error) {
+      console.log(error);
       console.log("No Jobs Posted Yet");
     }
   }
@@ -214,14 +219,20 @@ export const ChatAppProvider = ({ children }) => {
     try {
       const contract = await connectingWithContract();
       const _applicants = await contract.getApplicants(jobID);
-      setApplicants({
-        jobIDs: _applicants[0],
-        userIDs: _applicants[1],
-        names: _applicants[2],
-        statuses: _applicants[3],
-        applicationIDs: _applicants[4],
+      const rearrangedApplicants = _applicants[0].map((_, i) => {
+        return [    _applicants[0][i],
+          _applicants[1][i],
+          _applicants[2][i],
+          _applicants[3][i],
+          _applicants[4][i],
+        ];
       });
+      
+      setApplicants(rearrangedApplicants);
+      
+      console.log("getApp: "+applicants);
     } catch (error) {
+      console.log(error);
       console.log("No Applicants Applied Yet");
     }
   }
@@ -244,7 +255,7 @@ export const ChatAppProvider = ({ children }) => {
   const rejectApplicant = async (applicationID) => {
     try {
       const contract = await connectingWithContract();
-      const rejecting = await contract.selectApplicant(applicationID);
+      const rejecting = await contract.rejectApplicant(applicationID);
       setLoading(true);
       await rejecting.wait();
       setLoading(false);
@@ -445,6 +456,23 @@ const getQuestionBySkill = async (skill) => {
     console.log("No Questions for Given Quiz Yet");
   }
 }
+  //APPLY TO JOB
+  const applyToJob = async (jobID) =>{
+    try {
+      console.log(jobID);
+      // if (!role || !location) return setError("Enter Details Please");
+
+      const contract = await connectingWithContract();
+      const _apply = await contract.applyToJob(jobID);
+      setLoading(true);
+      await _apply.wait();
+      setLoading(false);
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      setError("Please reload and try again");
+    }
+  }
 
   return (
     <ChatAppContect.Provider
@@ -477,6 +505,7 @@ const getQuestionBySkill = async (skill) => {
         acceptQuestion,
         rejectQuestion,
         getQuestionBySkill,
+        applyToJob,
         account,
         userName,
         // friendLists,

@@ -241,7 +241,7 @@ contract ChatAppV2 is IChatApp {
 
     //REJECT APPLICANT
     function rejectApplicant(bytes32 applicationID) public {
-    require(_applicationsMap[applicationID].userID == msg.sender, "You are not authorized to reject this application.");
+    // require(_applicationsMap[applicationID].userID == msg.sender, "You are not authorized to reject this application.");
     _applicationsMap[applicationID].applicationStatus = "rejected";
 }
 

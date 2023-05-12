@@ -17,5 +17,6 @@ import AddExperienceModel from "./AddExperienceModel/AddExperienceModel";
 import AddSkillModel from "./AddSkillModel/AddSkillModel";
 import PendingQuestions from "./PendingQuestions/PendingQuestions";
 import AddQuestionModel from "./AddQuestionModel/AddQuestionModel";
+import JobApplicants from "./JobApplicants/JobApplicants";
 
-export { NavBar, Filter, Error, Loader, Model, Model2, UserCard, Friend, JobPage, UserNavBar, JobDetails, Applicants, Skills, Experience, UserProfileAdd, AddExperienceModel,AddSkillModel , PendingQuestions, AddQuestionModel};
+export { NavBar, Filter, Error, Loader, Model, Model2, UserCard, Friend, JobPage, UserNavBar, JobDetails, Applicants, Skills, Experience, UserProfileAdd, AddExperienceModel,AddSkillModel , PendingQuestions, AddQuestionModel, JobApplicants};
