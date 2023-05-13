@@ -37,8 +37,8 @@
       ]
     },
     "C:\\Users\\kruti\\vscode\\JS\\LY-skillcheck\\SkillCheck4\\Updated-code-for-blockchian-chatapp-main\\contracts\\ChatAppV2.sol": {
-      "lastModificationDate": 1683857222426,
-      "contentHash": "06520c8deac7c6678f772c4088b8bfcc",
+      "lastModificationDate": 1683922649802,
+      "contentHash": "910f7bbe8fb7e390f523d1459effc767",
       "sourceName": "contracts/ChatAppV2.sol",
       "solcConfig": {
         "version": "0.8.17",

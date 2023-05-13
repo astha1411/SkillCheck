@@ -35,7 +35,7 @@ const Skills = ({
     //   readUser(chatData.address);
     // }
     
-    // getSkills(account);
+    getSkills(account);
     console.log(userSkills);
   }, []);
 

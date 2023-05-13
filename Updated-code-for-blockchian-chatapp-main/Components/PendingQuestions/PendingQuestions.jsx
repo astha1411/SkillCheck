@@ -64,13 +64,13 @@ const PendingQuestions = ({
 
 {skillQuestion.map((el, i) => (
   <div key={i}>
-    <div>
-      <div style={{ backgroundColor: '#191d26', borderRadius: '10px', margin: '10px', padding: '0px 10px 0 10px' ,display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <div >
+      <div className={Style.Model_box_right_name_btn} style={{ backgroundColor: '#191d26', borderRadius: '10px', margin: '10px', padding: '0px 10px 0 10px' ,display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <p>{el[2]}</p>
           <p>{el[3]}</p>
-          <button onClick={() =>acceptQuestion(el[0])}>Accept</button>
-          <button onClick={() =>rejectQuestion(el[0])}>Reject</button>
+          <button  onClick={() =>acceptQuestion(el[0])}>Accept</button>
+          <button  onClick={() =>rejectQuestion(el[0])}>Reject</button>
         </div>
         <div>
           <p>{el[4]}</p>

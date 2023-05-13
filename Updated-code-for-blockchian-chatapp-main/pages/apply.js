@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { JobPage, NavBar } from "../Components/index";
+import { JobPage, UserNavBar } from "../Components/index";
 
 const apply = () => {
   return (
     <div>
-      <NavBar />
+      <UserNavBar />
       <JobPage/>
     </div>
   )

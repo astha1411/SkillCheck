@@ -22,11 +22,11 @@ const viewQuiz = () => {
   return (
     <div>
     <NavBar/>
-    <div className={Style.Chat}>
+      <div className={Style.Filter}>
       {console.log("item: "+item)}
       <h1>{item} Quiz Questions</h1>
-      <div className={Style.Chat_box_box}>
         <div className={Style.Chat_box}>
+      <div className={Style.Chat_box_box}>
           <div className={Style.Chat_box_left}>
           {/* <div style={{ display: 'flex', justifyContent: 'space-between' }}>
   <span>Organisation</span>

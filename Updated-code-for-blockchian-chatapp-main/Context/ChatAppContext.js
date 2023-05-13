@@ -342,7 +342,7 @@ export const ChatAppProvider = ({ children }) => {
       setLoading(false);
       window.location.reload();
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       setError("Please reload and try again");
     }
   }

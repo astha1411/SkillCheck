@@ -29,8 +29,10 @@ const orgQuiz = () => {
   return (
     <div>
       <NavBar/>
-      <div>
-        <select value={selectedItem} onChange={handleSelect}>
+      <div className={Style.Filter}>
+      <div className={Style.Filter_box_right} style={{width:'100%'}}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <select value={selectedItem} onChange={handleSelect}  >
           <option value="">Select a Skill</option>
           <option value="CPP">C++</option>
           <option value="JS">JS</option>
@@ -40,11 +42,13 @@ const orgQuiz = () => {
         </select>
         <button onClick={handleButtonClick}>View Quiz</button>
       </div>
-      <div className={Style.Filter_box_right}>
+      <div className={Style.Filter_box_right}  style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <button onClick={handleAddQuestionClick} style={{ cursor: 'pointer' }}>
             <Image src={images.user} alt="clear" width={20} height={20} />
             ADD QUESTION
           </button>
+          </div>
+          </div>
           </div>
       <PendingQuestions account={account}/>
       {_addQuestion && (

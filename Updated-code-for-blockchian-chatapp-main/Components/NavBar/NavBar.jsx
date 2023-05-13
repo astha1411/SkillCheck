@@ -10,10 +10,7 @@ import images from "../../assets";
 
 const NavBar = () => {
   const menuItems = [
-    {
-      menu: "JOB",
-      link: "basic",
-    },
+    
     {
       menu: "HOME",
       link: "/",
@@ -29,7 +26,7 @@ const NavBar = () => {
   ];
 
   //USESTATE
-  const [active, setActive] = useState(2);//which menu is open. by default, it is 2, i.e. CHAT
+  const [active, setActive] = useState(1);//which menu is open. by default, it is 2, i.e. CHAT
   const [open, setOpen] = useState(false);
   const [openModel, setOpenModel] = useState(false);
 

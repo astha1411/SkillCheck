@@ -18,14 +18,14 @@ const UserNavBar = () => {
       menu: "HOME",
       link: "/",
     },
-    {
-      menu: "APPLICATIONS",
-      link: "alluser",
-    },
-    {
-      menu: "SKILLS",
-      link: "/",
-    },
+    // {
+    //   menu: "APPLICATIONS",
+    //   link: "alluser",
+    // },
+    // {
+    //   menu: "SKILLS",
+    //   link: "/",
+    // },
   ];
 
   //USESTATE

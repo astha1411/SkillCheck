@@ -75,7 +75,7 @@ const JobApplicants = ({
       {console.log("aaa: "+typeof(el[1]))}
       <p>{el[2]}</p>
       <p>{el[3]}</p>
-      <div>
+      <div className={Style.Model_box_right_name_btn} >
       <button onClick={() =>selectApplicant(el[4])}>Accept</button>
       <button onClick={() =>rejectApplicant(el[4])}>Reject</button>
         </div>
