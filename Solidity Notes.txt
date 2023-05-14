@@ -1,3 +1,0 @@
-pure vs view
-pure: cant read or modify state variables. only operates on parameters passed to it
-view: cant modify state variables, but can read them
