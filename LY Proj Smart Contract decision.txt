@@ -1,0 +1,77 @@
+library can access state data of the contract that calls it. 
+
+
+have to implement a notification system. it will consist of a notification array associated with each userAddress. on certain triggers, 
+like accept Applicant, reject Applicant, proposed question being approved or rejected, a string will be sent to the notification array and
+the user will see on his notification page all his notifications
+
+user workflow:-
+
+sign up (fake aadhar card)
+
+view profile page
+add skills
+add experience
+
+view jobs page
+search jobs
+apply for jobs
+
+view applications page
+see status of applications
+
+org workflow:-
+
+sign up (fake verification link)
+
+view jobs page
+add job openings
+redirect to job openings page
+
+view pending experiences
+verify/refuse exp
+
+view job openings page
+view applicant info
+accept/reject candidate
+
+view questions page
+add question to skill quiz
+
+______
+
+SIGN UP:
+name, wallet id, type of user
+-> can have 1 array called user, which will have both types, or keep 2 arrays, one for ind, one for org
+
+USER PROFILE:
+see skills and exp: getAllSkills, getAllExp
+skills: name
+exp: org name, start month, start year, end month, end year, verification status 
+add skills (dropdown menu + other... ka option), add exp (dropdown from registered companies)
+-> can either have arrays for skills and exp in user struct, or have diff arrays for both
+
+USER APPLY FOR JOB PAGE:
+search for jobs: getAllJobs()
+jobs contain skills reqd, company, location, package
+apply for job 
+
+USER JOB APPLIED PAGE:
+see jobs applied to, and their status
+
+
+ORG HOME PAGE
+add jobs
+view all jobs: jobs return status (open/close), list of applicants, no of openings total, no of openings filled
+
+JOB PAGE:
+accept/reject applicants
+view applicant profile
+
+EXP PAGE: 
+view pending approvals
+accept or reject
+
+QUIZ PAGE:
+add questions
+approve pending questions

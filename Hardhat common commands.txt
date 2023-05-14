@@ -1,0 +1,13 @@
+npx hardhat node //to start server (JSON RPC server on top of hardhat EVM) i.e. initialise local blockchain
+npx hardhat run scripts/deploy.js --network localhost //deploy smartcontract to localhost
+npm run dev //runs the script/smartcontract
+
+after making changes to smart contract, do the following:
+stop both servers 
+go to metamask, settings>advanced>reset account
+delete ChatApp.json, artifacts and cache
+start node again(line 1)
+run command at line 2
+    if contract address is changed, paste it in constants.js 
+move ChatApp.json from artifacts into context 
+line 3
