@@ -79,8 +79,8 @@ const Chat = ({
 
             {yourJobs.map((el, i) => (
                 
-                  <div key={i}>
-                  <div style={{ margin: '1em 0', padding: '1em 0' }} >
+                  <div key={i}  className={Style.Model_box_right_name_btn} style={{width:'100%'}}>
+                  <div style={{ margin: '1em 0', padding: '1em 0.2em', backgroundColor:'#f182035b', borderRadius:'0.5em'  }} >
                     {/* <div onClick={() => jobRedirect(el[0])} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}> */}
                     <Link href={{ pathname: '/jobPage', query: { jobID: el[0] } }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}>

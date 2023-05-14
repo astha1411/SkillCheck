@@ -51,17 +51,7 @@ const Experience = ({
   // console.log(chatData.address, chatData.name);
   return (
     <div className={Style.Chat}>
-      {/* {currentUserName && currentUserAddress ? (
-        <div className={Style.Chat_user_info}>
-          <Image src={images.accountName} alt="image" width={70} height={70} />
-          <div className={Style.Chat_user_info_box}>
-            <h4>{currentUserName}</h4>
-            <p className={Style.show}>{currentUserAddress}</p>
-          </div>
-        </div>
-      ) : (
-        ""
-      )} */}
+      
       <h1>Experiences</h1>
       <div className={Style.Chat_box_box}>
         <div className={Style.Chat_box}>

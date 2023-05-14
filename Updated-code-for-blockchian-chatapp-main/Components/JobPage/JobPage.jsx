@@ -67,7 +67,7 @@ const JobPage = ({
           <div className={Style.Chat_box_left}>
           
 <div style={{ display: 'flex', flexDirection: 'column' }}>
-  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+  <div style={{ fontSize: '1.2em', display: 'flex', justifyContent: 'space-between' }}>
     <span>Name</span>
     <span>Role</span>
     <span>Location</span>
@@ -81,11 +81,11 @@ const JobPage = ({
 </div>
 {allJobs.map((el, i) => (
                 
-                <div key={i}>
-                <div style={{ margin: '1em 0', padding: '1em 0' }} >
+                <div key={i} className={Style.Model_box_right_name_btn} style={{width:'100%'}}  >
+                <div style={{ margin: '1em 0', padding: '1em 1em', backgroundColor:'#f182035b', borderRadius:'0.5em' }} >
                   {/* <div onClick={() => jobRedirect(el[0])} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}> */}
                   {/* <Link href={{ pathname: '/jobPage', query: { jobID: el[0] } }}> */}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '0.5em 0', fontWeight: 'bold' }}>
                     <small>{(el[2])}</small>
                     <small>{(el[3])}</small>
                     <small>{(el[4])}</small>

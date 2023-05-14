@@ -1,6 +1,6 @@
 import React,{useContext, useState, useEffect} from 'react'
 import { ChatAppContect } from "../Context/ChatAppContext";
-import { PendingQuestions, NavBar, AddQuestionModel } from '../Components/index'
+import { PendingQuestions, UserNavBar, AddQuestionModel } from '../Components/index'
 import { useRouter } from 'next/router';
 import Image from "next/image";
 import Style from "../Components/UserProfileAdd/UserProfileAdd.module.css";
@@ -50,13 +50,13 @@ const userTakeQuiz = () => {
   
   return (
     <div>
-      <NavBar/>
+      <UserNavBar/>
       <div>
         
       </div>
       
       {skillQuiz.map((el, i) => (
-  <div key={i}>
+  <div key={i} style={{ marginLeft: 'auto' }}>
     <div style={{ backgroundColor: '#191d26', borderRadius: '10px', margin: '10px', padding: '0px 10px 0 10px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
@@ -82,9 +82,11 @@ const userTakeQuiz = () => {
         </div>
       </div>
     </div>
-    <button onClick={handleSubmit}>Submit</button>
+  
+
   </div>
 ))}
+<button onClick={handleSubmit}>Submit</button>
 
     </div>
   )

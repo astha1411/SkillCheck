@@ -69,7 +69,7 @@ const JobApplicants = ({
 </div>
 <div style={{ width: '100%' }}>
 {Object.values(applicants).filter(el => el[3] === "ongoing").map((el, index) => (
-  <div key={index}>
+  <div key={index} >
     <Link href={{ pathname: '/orgUserProfile', query: { userID: el[1] } }}>
      <div style={{ display: 'flex', alignItems: 'center',justifyContent: 'space-between' }}>
       {console.log("aaa: "+typeof(el[1]))}

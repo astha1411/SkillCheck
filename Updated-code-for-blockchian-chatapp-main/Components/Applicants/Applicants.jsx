@@ -45,7 +45,7 @@ const Applicants = ({
   
   // console.log("applicants2: ", applicants);
   function getName(account) {
-      // readAnyUser(account);
+      readAnyUser(account);
     }
   
   // console.log(chatData.address, chatData.name);
@@ -75,12 +75,12 @@ const Applicants = ({
 <div style={{ width: '100%' }}>
 {Object.values(pendingExperiences).map((el, index) => (
   <div key={index}>
-     <div style={{ display: 'flex', alignItems: 'center',justifyContent: 'space-between' }}>
-      {getName()}
+     <div style={{ display: 'flex', alignItems: 'center',justifyContent: 'space-between', marginTop:'1em' }}>
+      {getName(el[1])}
       {console.log("aaa: "+anyUser)}
-      <p>{el[1]}</p>
+      <p>{anyUser}</p>
       <p>{el[9]?"true":"false"}</p>
-      <div>
+      <div className={Style.Model_box_right_name_btn}>
       <button onClick={() =>selectExperience(el[0])}>Accept</button>
       <button onClick={() =>rejectExperience(el[0])}>Reject</button>
         </div>
